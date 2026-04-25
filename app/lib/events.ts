@@ -16,7 +16,10 @@ export type EventType =
   | "generation_success"
   | "generation_error"
   | "download_clicked"
-  | "rate_limited";
+  | "rate_limited"
+  | "share_clicked"
+  | "share_copy_clicked"
+  | "whatsapp_share_clicked";
 
 export type ErrorType =
   | "validation"
