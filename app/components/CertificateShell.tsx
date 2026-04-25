@@ -4,6 +4,27 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ARABIC_NAME_PATTERN, EMAIL_PATTERN, NAME_MAX_LENGTH } from "@/lib/client-constants";
 
+/** Bahrain flag as inline SVG — replaces a 290 KB PNG with ~400 bytes. */
+function BahrainFlag({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 30 20"
+      width={20}
+      height={20}
+      aria-hidden="true"
+      className={className}
+    >
+      <rect width="30" height="20" fill="#CE1126" />
+      {/* White band with 5 serrated triangular points */}
+      <path
+        fill="#FFFFFF"
+        d="M0,0 H10 L8,2 L10,4 L8,6 L10,8 L8,10 L10,12 L8,14 L10,16 L8,18 L10,20 H0 Z"
+      />
+    </svg>
+  );
+}
+
 type Screen = "welcome" | "form" | "result";
 type ShareStatus = "idle" | "copied";
 
@@ -169,7 +190,7 @@ export default function CertificateShell() {
           className="absolute bottom-[1.5%] inset-x-0 flex justify-center items-center gap-1 group"
         >
           <span className="text-[10px] text-white/35 group-hover:text-white/65 transition tracking-wide">Powered by Proud</span>
-          <Image src="/assets/Bahrain.png" alt="Bahrain" width={20} height={20} className="opacity-35 group-hover:opacity-65 transition" />
+          <BahrainFlag className="opacity-35 group-hover:opacity-65 transition" />
         </a>
       </div>
     );
@@ -195,7 +216,7 @@ export default function CertificateShell() {
           className="absolute bottom-[1.5%] inset-x-0 flex justify-center items-center gap-1 group"
         >
           <span className="text-[10px] text-white/35 group-hover:text-white/65 transition tracking-wide">Powered by Proud</span>
-          <Image src="/assets/Bahrain.png" alt="Bahrain" width={20} height={20} className="opacity-35 group-hover:opacity-65 transition" />
+          <BahrainFlag className="opacity-35 group-hover:opacity-65 transition" />
         </a>
         {/* Form overlaid below the logo — logo occupies the top ~38% of the image */}
         <form
