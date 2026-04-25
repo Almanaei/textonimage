@@ -11,14 +11,6 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "db:migrate": "tsx scripts/migrate.ts",
-    "qa:track": "tsx scripts/test-track.ts",
-    "qa:stats": "tsx scripts/test-stats.ts",
-    "qa:analytics": "npm run qa:track && npm run qa:stats",
-    "qa:admin": "tsx scripts/test-admin-api.ts",
-    "agent:plan": "tsx scripts/agent-dispatcher.ts",
-    "agent:implement": "tsx scripts/run-agent.ts --phase implement",
-    "agent:verify": "tsx scripts/agent-verify.ts",
-    "agent:release-gate": "tsx scripts/agent-release-gate.ts",
     "admin:create-password": "tsx scripts/create-admin-password.ts"
   },
   "dependencies": {
