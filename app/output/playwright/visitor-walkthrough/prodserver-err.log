@@ -1,3 +1,0 @@
-⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
-[db] DATABASE_URL not set — analytics and event tracking are disabled.
-[db] DATABASE_URL not set — analytics and event tracking are disabled.

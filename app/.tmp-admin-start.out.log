@@ -1,8 +1,0 @@
-
-> app@0.1.0 start
-> next start --port 3010
-
-▲ Next.js 16.2.4
-- Local:         http://localhost:3010
-- Network:       http://172.20.176.1:3010
-✓ Ready in 636ms

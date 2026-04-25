@@ -1,5 +1,0 @@
-- generic [active] [ref=e1]:
-  - generic [ref=e2]:
-    - img "مرحباً" [ref=e49]
-    - button "وصّل شكرك الآن" [ref=e51]
-  - alert [ref=e6]
