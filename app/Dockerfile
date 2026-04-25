@@ -33,7 +33,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Runtime libraries for @napi-rs/canvas and sharp
+# Runtime libraries for @napi-rs/canvas and sharp; wget for healthcheck
 RUN apk add --no-cache \
     libc6-compat \
     pixman \
@@ -41,7 +41,8 @@ RUN apk add --no-cache \
     pango \
     jpeg \
     giflib \
-    librsvg
+    librsvg \
+    wget
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser  --system --uid 1001 nextjs

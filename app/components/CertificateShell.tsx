@@ -5,11 +5,27 @@ import Image from "next/image";
 import { ARABIC_NAME_PATTERN, EMAIL_PATTERN, NAME_MAX_LENGTH } from "@/lib/client-constants";
 
 type Screen = "welcome" | "form" | "result";
+type ShareStatus = "idle" | "copied";
+
+const APP_URL = typeof window !== "undefined" ? window.location.origin : "https://thanksbahrainccd.com";
+const WHATSAPP_TEXT = encodeURIComponent(
+  `أنشئ شهادة شكرك لرجال الدفاع المدني البحريني من هنا: ${APP_URL}`,
+);
+
+function track(eventType: string) {
+  void fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ eventType }),
+  });
+}
 
 export default function CertificateShell() {
   const [screen, setScreen] = useState<Screen>("welcome");
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const [shareStatus, setShareStatus] = useState<ShareStatus>("idle");
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [serverError, setServerError] = useState("");
@@ -52,6 +68,7 @@ export default function CertificateShell() {
       if (res.ok) {
         const arrayBuffer = await res.arrayBuffer();
         const blob = new Blob([arrayBuffer], { type: "image/png" });
+        setImageBlob(blob);
         setImageUrl((prev) => {
           if (prev) URL.revokeObjectURL(prev);
           return URL.createObjectURL(blob);
@@ -68,6 +85,48 @@ export default function CertificateShell() {
     } finally {
       setLoading(false);
     }
+  }
+
+  // ── Share handlers ──────────────────────────────────────────────────────────
+  async function handleShare() {
+    if (navigator.share) {
+      const shareData: ShareData = {
+        title: "شهادة شكر وتقدير",
+        text: "أنشئ شهادتك الخاصة لرجال الدفاع المدني البحريني",
+        url: APP_URL,
+      };
+      // Attach the image file when the browser supports file-in-share
+      if (
+        imageBlob &&
+        typeof navigator.canShare === "function" &&
+        navigator.canShare({
+          files: [new File([imageBlob], "shahadah.png", { type: "image/png" })],
+        })
+      ) {
+        shareData.files = [new File([imageBlob], "shahadah.png", { type: "image/png" })];
+      }
+      try {
+        await navigator.share(shareData);
+        track("share_clicked");
+      } catch {
+        // User cancelled the share sheet — no action needed
+      }
+    } else {
+      // Desktop fallback: copy the app URL to clipboard
+      try {
+        await navigator.clipboard.writeText(APP_URL);
+        setShareStatus("copied");
+        setTimeout(() => setShareStatus("idle"), 2500);
+        track("share_copy_clicked");
+      } catch {
+        // Clipboard unavailable — silently ignore
+      }
+    }
+  }
+
+  function handleWhatsApp() {
+    window.open(`https://wa.me/?text=${WHATSAPP_TEXT}`, "_blank", "noopener,noreferrer");
+    track("whatsapp_share_clicked");
   }
 
   // ── Screen 1: Welcome ───────────────────────────────────────────────────────
@@ -92,6 +151,15 @@ export default function CertificateShell() {
             وصّل شكرك الآن
           </button>
         </div>
+        {/* Powered by Proud */}
+        <a
+          href="mailto:admin@thanksbahraincd.com"
+          aria-label="تواصل معنا"
+          className="absolute bottom-[1.5%] inset-x-0 flex justify-center items-center gap-1 group"
+        >
+          <span className="text-[10px] text-white/35 group-hover:text-white/65 transition tracking-wide">Powered by Proud</span>
+          <Image src="/assets/Bahrain.png" alt="Bahrain" width={20} height={20} className="opacity-35 group-hover:opacity-65 transition" unoptimized />
+        </a>
       </div>
     );
   }
@@ -109,6 +177,15 @@ export default function CertificateShell() {
           unoptimized
         />
 
+        {/* Powered by Proud */}
+        <a
+          href="mailto:admin@thanksbahraincd.com"
+          aria-label="تواصل معنا"
+          className="absolute bottom-[1.5%] inset-x-0 flex justify-center items-center gap-1 group"
+        >
+          <span className="text-[10px] text-white/35 group-hover:text-white/65 transition tracking-wide">Powered by Proud</span>
+          <Image src="/assets/Bahrain.png" alt="Bahrain" width={20} height={20} className="opacity-35 group-hover:opacity-65 transition" unoptimized />
+        </a>
         {/* Form overlaid below the logo — logo occupies the top ~38% of the image */}
         <form
           onSubmit={handleSubmit}
@@ -196,7 +273,7 @@ export default function CertificateShell() {
                 جارٍ الإنشاء…
               </>
             ) : (
-              "إنشاء الصورة"
+              "أنشأ الصورة"
             )}
           </button>
         </form>
@@ -229,24 +306,58 @@ export default function CertificateShell() {
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
-          // Fire-and-forget: record download click for analytics
-          void fetch("/api/track", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ eventType: "download_clicked" }),
-          });
+          track("download_clicked");
         }}
         className="flex items-center justify-center gap-2 w-full rounded-xl bg-white py-4 text-base font-bold text-gray-900 shadow-lg transition active:scale-95 hover:bg-white/90 font-arabic"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
         </svg>
-        تحميل الشهادة
+        تحميل الصورة
       </button>
+
+      {/* Share row */}
+      <div className="flex gap-3">
+        {/* Native share / copy-link fallback */}
+        <button
+          onClick={handleShare}
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white/15 border border-white/25 backdrop-blur-sm py-3.5 text-sm font-bold text-white shadow transition active:scale-95 hover:bg-white/25 font-arabic"
+        >
+          {shareStatus === "copied" ? (
+            <>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              نُسخ الرابط
+            </>
+          ) : (
+            <>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+              </svg>
+              شارك التطبيق
+            </>
+          )}
+        </button>
+
+        {/* WhatsApp direct share */}
+        <button
+          onClick={handleWhatsApp}
+          aria-label="شارك عبر واتساب"
+          className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] py-3.5 px-4 text-sm font-bold text-white shadow transition active:scale-95 hover:bg-[#1ebe5d] font-arabic"
+        >
+          {/* WhatsApp logo */}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.557 4.117 1.534 5.845L.054 23.447a.5.5 0 00.609.61l5.71-1.496A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.9 9.9 0 01-5.031-1.371l-.361-.214-3.731.979.993-3.63-.235-.374A9.863 9.863 0 012.1 12C2.1 6.533 6.533 2.1 12 2.1c5.467 0 9.9 4.433 9.9 9.9 0 5.467-4.433 9.9-9.9 9.9z"/>
+          </svg>
+          واتساب
+        </button>
+      </div>
 
       {/* Make another */}
       <button
-        onClick={() => { setScreen("welcome"); setImageUrl(""); }}
+        onClick={() => { setScreen("welcome"); setImageUrl(""); setImageBlob(null); }}
         className="text-sm text-white/70 underline underline-offset-2 hover:text-white transition font-arabic"
       >
         إنشاء شهادة أخرى

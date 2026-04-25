@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { requireAdminAccess } from "@/lib/admin/auth";
-import { buildAdminGenerations } from "@/lib/admin/aggregation";
+import { buildAdminGenerations, isDatabaseError } from "@/lib/admin/aggregation";
 import { logAdminEvent } from "@/lib/admin/observability";
 import { parseGenerationsQuery, toAdminDateRange } from "@/lib/admin/schema";
 
@@ -45,13 +45,16 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    if (err instanceof Error && err.message === "Database not configured") {
+    if (isDatabaseError(err)) {
       return NextResponse.json(
         { success: false, message: "Analytics not available." },
         { status: 503, headers: NO_STORE },
       );
     }
 
+    const reason = err instanceof Error
+      ? (err.message || (err as NodeJS.ErrnoException).code || err.constructor.name)
+      : "unknown";
     logAdminEvent("error", {
       event: "admin_generations_failed",
       route: req.nextUrl.pathname,
@@ -59,7 +62,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       permission: "admin:read",
       status: 500,
       latencyMs: Date.now() - t0,
-      reason: err instanceof Error ? err.message : "unknown",
+      reason: reason ?? "unknown",
     });
     return NextResponse.json(
       { success: false, message: "Failed to retrieve generation analytics." },

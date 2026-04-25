@@ -45,10 +45,10 @@ export async function recordEvent(
       [sessionId, eventType, JSON.stringify(metadata)],
     );
   } catch (err) {
-    console.error("[events] recordEvent failed", {
-      eventType,
-      error: err instanceof Error ? err.message : String(err),
-    });
+    const msg = err instanceof Error
+      ? (err.message || (err as NodeJS.ErrnoException).code || err.constructor.name)
+      : String(err);
+    console.error("[events] recordEvent failed", { eventType, error: msg });
   }
 }
 
@@ -74,10 +74,10 @@ export async function recordGenerationLog(
       [sessionId, success, durationMs, errorType ?? null, name ?? null, email ?? null],
     );
   } catch (err) {
-    console.error("[events] recordGenerationLog failed", {
-      success,
-      error: err instanceof Error ? err.message : String(err),
-    });
+    const msg = err instanceof Error
+      ? (err.message || (err as NodeJS.ErrnoException).code || err.constructor.name)
+      : String(err);
+    console.error("[events] recordGenerationLog failed", { success, error: msg });
   }
 }
 
@@ -95,8 +95,9 @@ export async function upsertSession(sessionId: string): Promise<void> {
       [sessionId],
     );
   } catch (err) {
-    console.error("[events] upsertSession failed", {
-      error: err instanceof Error ? err.message : String(err),
-    });
+    const msg = err instanceof Error
+      ? (err.message || (err as NodeJS.ErrnoException).code || err.constructor.name)
+      : String(err);
+    console.error("[events] upsertSession failed", { error: msg });
   }
 }

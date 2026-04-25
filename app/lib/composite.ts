@@ -6,17 +6,26 @@
  * PNG as a Buffer.
  *
  * Latency optimisations (zero quality loss):
- *  1. Template is flatten+resized ONCE at module load into raw RGBA pixels.
+ *  1. Template is flatten+resized ONCE at module load into raw pixels.
  *     Every subsequent request skips PNG decode, flatten, and Lanczos3 resize.
- *  2. PNG encoding uses compressionLevel 6 — ~3× faster than 9 with only
- *     ~5-10% larger output.  Palette/quantisation removed (was lossy).
+ *  2. QR code overlay is cropped, resized, and cached the same way.
+ *  3. PNG encoding uses compressionLevel 6 — ~3× faster than 9 with only
+ *     ~5-10% larger output.
  */
 
 import sharp from "sharp";
 import path from "path";
 import fs from "fs/promises";
+import { templateConfig } from "./template-config";
 
-const TEMPLATE_PATH = path.join(process.cwd(), "public", "assets", "template.png");
+const NATIVE_WIDTH = templateConfig.template.width; // 1015
+const OUTPUT_WIDTH = 2400;
+const SCALE = OUTPUT_WIDTH / NATIVE_WIDTH;
+
+const TEMPLATE_PATH = path.join(process.cwd(), templateConfig.template.path);
+const QR_PATH = path.join(process.cwd(), templateConfig.qr.path);
+
+// ─── Template cache ────────────────────────────────────────────────────────────
 
 type PreparedTemplate = {
   data: Buffer;
@@ -32,8 +41,8 @@ async function buildPreparedTemplate(): Promise<PreparedTemplate> {
   try {
     const raw = await fs.readFile(TEMPLATE_PATH);
     const { data, info } = await sharp(raw)
-      .flatten({ background: "#8B7355" }) // fill transparent areas with gold-brown
-      .resize(2400, null, { kernel: sharp.kernel.lanczos3 })
+      .flatten({ background: "#8B7355" })
+      .resize(OUTPUT_WIDTH, null, { kernel: sharp.kernel.lanczos3 })
       .raw()
       .toBuffer({ resolveWithObject: true });
     return {
@@ -51,7 +60,6 @@ async function buildPreparedTemplate(): Promise<PreparedTemplate> {
   }
 }
 
-/** Returns the cached prepared template, building it on first call. */
 function getPreparedTemplate(): Promise<PreparedTemplate> {
   if (_prepared) return Promise.resolve(_prepared);
   if (!_buildPromise) {
@@ -63,23 +71,99 @@ function getPreparedTemplate(): Promise<PreparedTemplate> {
   return _buildPromise;
 }
 
-// Warm up at module load — the first real request pays no resize penalty.
+// ─── QR overlay cache ─────────────────────────────────────────────────────────
+
+type PreparedQR = {
+  data: Buffer;
+  width: number;
+  height: number;
+  channels: 1 | 2 | 3 | 4;
+  left: number;
+  top: number;
+};
+
+let _preparedQR: PreparedQR | null = null;
+let _qrBuildPromise: Promise<PreparedQR> | null = null;
+
+async function buildPreparedQR(): Promise<PreparedQR> {
+  try {
+    const { sourceCrop, target } = templateConfig.qr;
+    const targetW = Math.round(target.width * SCALE);
+    const targetH = Math.round(target.height * SCALE);
+
+    const raw = await fs.readFile(QR_PATH);
+    const { data, info } = await sharp(raw)
+      .extract({
+        left: sourceCrop.left,
+        top: sourceCrop.top,
+        width: sourceCrop.width,
+        height: sourceCrop.height,
+      })
+      .resize(targetW, targetH, { kernel: sharp.kernel.lanczos3 })
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+
+    return {
+      data,
+      width: info.width,
+      height: info.height,
+      channels: info.channels as 1 | 2 | 3 | 4,
+      left: Math.round(target.left * SCALE),
+      top: Math.round(target.top * SCALE),
+    };
+  } catch (err) {
+    console.error("[composite] Failed to prepare QR overlay", {
+      path: QR_PATH,
+      error: err instanceof Error ? err.message : String(err),
+    });
+    throw err;
+  }
+}
+
+function getPreparedQR(): Promise<PreparedQR> {
+  if (_preparedQR) return Promise.resolve(_preparedQR);
+  if (!_qrBuildPromise) {
+    _qrBuildPromise = buildPreparedQR().then((q) => {
+      _preparedQR = q;
+      return q;
+    });
+  }
+  return _qrBuildPromise;
+}
+
+// Warm up both assets at module load.
 getPreparedTemplate().catch((err) =>
   console.warn("[composite] Template warm-up failed:", err instanceof Error ? err.message : err),
 );
+getPreparedQR().catch((err) =>
+  console.warn("[composite] QR warm-up failed:", err instanceof Error ? err.message : err),
+);
+
+// ─── Compositing ──────────────────────────────────────────────────────────────
 
 /**
- * Composite a pre-built PNG text layer Buffer onto the certificate template.
+ * Composite the certificate template, QR overlay, and text layer into a
+ * single PNG. Layer order (bottom → top): template → QR → text.
+ *
  * @param textLayer - Transparent PNG Buffer produced by `buildCanvasTextLayer`
  * @returns PNG Buffer of the final composed image
  */
 export async function compositeImage(textLayer: Buffer): Promise<Buffer> {
-  const tmpl = await getPreparedTemplate();
+  const [tmpl, qr] = await Promise.all([getPreparedTemplate(), getPreparedQR()]);
 
   return sharp(tmpl.data, {
     raw: { width: tmpl.width, height: tmpl.height, channels: tmpl.channels },
   })
-    .composite([{ input: textLayer, top: 0, left: 0, blend: "over" }])
+    .composite([
+      {
+        input: Buffer.from(qr.data),
+        raw: { width: qr.width, height: qr.height, channels: qr.channels },
+        left: qr.left,
+        top: qr.top,
+        blend: "over",
+      },
+      { input: textLayer, top: 0, left: 0, blend: "over" },
+    ])
     .png({ compressionLevel: 6 })
     .toBuffer();
 }

@@ -18,6 +18,22 @@ function assertPool() {
   return pool;
 }
 
+/**
+ * Returns true for any error that indicates the database is unreachable or
+ * not yet available — e.g. ECONNREFUSED, ENOTFOUND, pool timeout, or a
+ * pg internal error that surfaces with an empty message string.
+ * Used by admin route handlers to return 503 instead of 500.
+ */
+export function isDatabaseError(err: unknown): boolean {
+  if (!(err instanceof Error)) return false;
+  if (err.message === "Database not configured") return true;
+  // pg-pool emits Error objects with empty message in some connection-failure paths
+  if (err.message === "") return true;
+  const code = (err as NodeJS.ErrnoException).code;
+  if (code && ["ECONNREFUSED", "ENOTFOUND", "ETIMEDOUT", "ECONNRESET"].includes(code)) return true;
+  return false;
+}
+
 function toCount(value: string | number | null | undefined): number {
   if (value === null || value === undefined) return 0;
   return Number(value);

@@ -29,6 +29,12 @@ const TEXT_COLOR = "#FFFFFF";
 const FONT_FAMILY = "ArabicCert";
 const FONT_PATH = path.join(process.cwd(), "public", "assets", "Arabic.ttf");
 
+/** Year line rendered below the name */
+const YEAR_TEXT = "2026 م - 1447 هـ";
+/** Year font size as a fraction of the name font size (clamped to a minimum) */
+const YEAR_FONT_RATIO = 0.55;
+const YEAR_FONT_MIN = 24;
+
 // Register the font once per process (path keyed so hot-reload picks up changes)
 let _registeredFontPath = "";
 function ensureFontRegistered(): void {
@@ -68,6 +74,15 @@ export function buildCanvasTextLayer(layout: TextLayout): Buffer {
     ctx.font = `bold ${scaledFontSize}px "${FONT_FAMILY}"`;
     ctx.fillText(line, scaledCenterX, scaledY);
   }
+
+  // Draw year line below the last name line
+  const yearFontSize = Math.max(YEAR_FONT_MIN, Math.round(layout.fontSize * YEAR_FONT_RATIO));
+  const lastNameY = layout.lineYPositions[layout.lineYPositions.length - 1];
+  const yearNativeY = lastNameY + Math.round(layout.fontSize * 1.3);
+  const scaledYearFontSize = yearFontSize * SCALE;
+  const scaledYearY = yearNativeY * SCALE;
+  ctx.font = `bold ${scaledYearFontSize}px "${FONT_FAMILY}"`;
+  ctx.fillText(YEAR_TEXT, scaledCenterX, scaledYearY);
 
   return canvas.toBuffer("image/png");
 }

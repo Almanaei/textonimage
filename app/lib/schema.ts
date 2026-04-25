@@ -35,6 +35,9 @@ const EVENT_TYPES = [
   "generation_error",
   "download_clicked",
   "rate_limited",
+  "share_clicked",
+  "share_copy_clicked",
+  "whatsapp_share_clicked",
 ] as const;
 
 export const TrackEventSchema = z.object({

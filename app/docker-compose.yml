@@ -43,7 +43,9 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-changeme}@db:5432/arabic_image_gen
       STATS_SECRET: ${STATS_SECRET:?STATS_SECRET must be set}
-      ADMIN_API_KEYS: ${ADMIN_API_KEYS:?ADMIN_API_KEYS must be set}
+      ADMIN_API_KEYS: ${ADMIN_API_KEYS:-}
+      ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET:?ADMIN_SESSION_SECRET must be set}
+      ADMIN_CREDENTIALS: ${ADMIN_CREDENTIALS:?ADMIN_CREDENTIALS must be set}
       ADMIN_AUTH_MAX_ATTEMPTS: ${ADMIN_AUTH_MAX_ATTEMPTS:-30}
       ADMIN_AUTH_WINDOW_MS: ${ADMIN_AUTH_WINDOW_MS:-60000}
       RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-10}
@@ -57,10 +59,11 @@ services:
       migrate:
         condition: service_completed_successfully
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api/generate || true"]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api/health | grep -q '\"status\":\"ok\"'"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 15s
 
 volumes:
   postgres_data:
