@@ -1,0 +1,26 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - heading "شهادة الولاء" [level=1] [ref=e4]
+      - paragraph [ref=e5]: أدخل اسمك لإنشاء شهادتك الخاصة وتحميلها
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]: الاسم بالعربي
+        - textbox "الاسم بالعربي" [ref=e10]:
+          - /placeholder: "مثال: سالم أحمد المناعي"
+          - text: سالم أحمد
+      - generic [ref=e11]:
+        - generic [ref=e12]: البريد الإلكتروني
+        - textbox "البريد الإلكتروني" [ref=e13]:
+          - /placeholder: example@email.com
+          - text: salim@example.com
+      - button "إنشاء الشهادة" [ref=e14]
+    - generic [ref=e27]:
+      - img "شهادتك" [ref=e29]
+      - link "تحميل الشهادة" [active] [ref=e30] [cursor=pointer]:
+        - /url: blob:http://localhost:3000/c68bf9e5-d939-42de-871e-22b103910609
+        - img [ref=e31]
+        - text: تحميل الشهادة
+  - button "Open Next.js Dev Tools" [ref=e21] [cursor=pointer]:
+    - img [ref=e22]
+  - alert [ref=e15]

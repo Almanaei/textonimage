@@ -1,0 +1,10 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - img "شهادتك" [ref=e26]
+    - button "تحميل الشهادة" [ref=e27]:
+      - img [ref=e28]
+      - text: تحميل الشهادة
+    - button "إنشاء شهادة أخرى" [ref=e30]
+  - button "Open Next.js Dev Tools" [ref=e11] [cursor=pointer]:
+    - img [ref=e12]
+  - alert [ref=e15]

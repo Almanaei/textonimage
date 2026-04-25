@@ -1,0 +1,202 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e6]:
+            - paragraph [ref=e7]: Operations
+            - heading "Admin Dashboard" [level=1] [ref=e8]
+            - paragraph [ref=e9]: Monitor generation activity, user/session metrics, reporting trends, and export operational data.
+          - generic [ref=e10]:
+            - button "Refresh" [ref=e11]
+            - button "Sign Out" [ref=e12]
+        - generic [ref=e13]:
+          - generic [ref=e14]: "API Health: healthy"
+          - generic [ref=e15]: "Sync: Not synced yet"
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]:
+            - generic [ref=e19]: Start date
+            - textbox "Start date" [ref=e20]
+          - generic [ref=e21]:
+            - generic [ref=e22]: End date
+            - textbox "End date" [ref=e23]
+          - generic [ref=e24]:
+            - generic [ref=e25]: Generation status
+            - combobox "Generation status" [ref=e26]:
+              - option "All" [selected]
+              - option "Successful only"
+              - option "Failed only"
+          - generic [ref=e27]:
+            - generic [ref=e28]: Error type filter
+            - textbox "Error type filter" [ref=e29]:
+              - /placeholder: e.g. server
+        - generic [ref=e30]:
+          - button "Apply Filters" [ref=e31]
+          - button "Reset Filters" [ref=e32]
+      - generic [ref=e33]:
+        - article [ref=e34]:
+          - paragraph [ref=e35]: Visitors
+          - paragraph [ref=e36]: "0"
+        - article [ref=e37]:
+          - paragraph [ref=e38]: Sessions
+          - paragraph [ref=e39]: "0"
+        - article [ref=e40]:
+          - paragraph [ref=e41]: Successful Generations
+          - paragraph [ref=e42]: "0"
+        - article [ref=e43]:
+          - paragraph [ref=e44]: Failed Generations
+          - paragraph [ref=e45]: "0"
+        - article [ref=e46]:
+          - paragraph [ref=e47]: Total Generations
+          - paragraph [ref=e48]: "0"
+        - article [ref=e49]:
+          - paragraph [ref=e50]: Conversion Rate
+          - paragraph [ref=e51]: 0%
+        - article [ref=e52]:
+          - paragraph [ref=e53]: Avg Generation Time
+          - paragraph [ref=e54]: 0 ms
+        - article [ref=e55]:
+          - paragraph [ref=e56]: Rate-Limited Requests
+          - paragraph [ref=e57]: "0"
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - heading "Generation Activity" [level=2] [ref=e60]
+          - generic [ref=e61]: Live dataset
+        - table [ref=e63]:
+          - rowgroup [ref=e64]:
+            - row "Created At Session Status Duration Error Type" [ref=e65]:
+              - columnheader "Created At" [ref=e66]
+              - columnheader "Session" [ref=e67]
+              - columnheader "Status" [ref=e68]
+              - columnheader "Duration" [ref=e69]
+              - columnheader "Error Type" [ref=e70]
+          - rowgroup [ref=e71]:
+            - row "No generation records for the selected filters." [ref=e72]:
+              - cell "No generation records for the selected filters." [ref=e73]
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - generic [ref=e76]: Page 1 / 1
+            - generic [ref=e77]: 0 rows
+          - generic [ref=e78]:
+            - generic [ref=e79]: Rows
+            - combobox [ref=e80]:
+              - option "10"
+              - option "25" [selected]
+              - option "50"
+              - option "100"
+            - button "Previous" [disabled] [ref=e81]
+            - button "Next" [disabled] [ref=e82]
+      - generic [ref=e83]:
+        - article [ref=e84]:
+          - heading "Users Overview" [level=2] [ref=e85]
+          - generic [ref=e86]:
+            - article [ref=e87]:
+              - paragraph [ref=e88]: New Users
+              - paragraph [ref=e89]: "0"
+            - article [ref=e90]:
+              - paragraph [ref=e91]: Active Users
+              - paragraph [ref=e92]: "0"
+            - article [ref=e93]:
+              - paragraph [ref=e94]: Returning Users
+              - paragraph [ref=e95]: "0"
+            - article [ref=e96]:
+              - paragraph [ref=e97]: Download Clicks
+              - paragraph [ref=e98]: "0"
+          - table [ref=e100]:
+            - rowgroup [ref=e101]:
+              - row "Date New Users Active Users" [ref=e102]:
+                - columnheader "Date" [ref=e103]
+                - columnheader "New Users" [ref=e104]
+                - columnheader "Active Users" [ref=e105]
+            - rowgroup [ref=e106]:
+              - row "No user trend data for selected range." [ref=e107]:
+                - cell "No user trend data for selected range." [ref=e108]
+          - generic [ref=e109]:
+            - generic [ref=e110]:
+              - generic [ref=e111]: Page 1 / 1
+              - generic [ref=e112]: 0 rows
+            - generic [ref=e113]:
+              - generic [ref=e114]: Rows
+              - combobox [ref=e115]:
+                - option "10"
+                - option "25" [selected]
+                - option "50"
+                - option "100"
+              - button "Previous" [disabled] [ref=e116]
+              - button "Next" [disabled] [ref=e117]
+        - article [ref=e118]:
+          - generic [ref=e119]:
+            - heading "Sessions" [level=2] [ref=e120]
+            - combobox [ref=e122]:
+              - option "Sort by last seen" [selected]
+              - option "Sort by created at"
+          - table [ref=e124]:
+            - rowgroup [ref=e125]:
+              - row "Session ID Created Last Seen Events Generations" [ref=e126]:
+                - columnheader "Session ID" [ref=e127]
+                - columnheader "Created" [ref=e128]
+                - columnheader "Last Seen" [ref=e129]
+                - columnheader "Events" [ref=e130]
+                - columnheader "Generations" [ref=e131]
+            - rowgroup [ref=e132]:
+              - row "No sessions found for the selected filters." [ref=e133]:
+                - cell "No sessions found for the selected filters." [ref=e134]
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - generic [ref=e137]: Page 1 / 1
+              - generic [ref=e138]: 0 rows
+            - generic [ref=e139]:
+              - generic [ref=e140]: Rows
+              - combobox [ref=e141]:
+                - option "10"
+                - option "25" [selected]
+                - option "50"
+                - option "100"
+              - button "Previous" [disabled] [ref=e142]
+              - button "Next" [disabled] [ref=e143]
+      - generic [ref=e144]:
+        - article [ref=e145]:
+          - heading "Reports and Export" [level=2] [ref=e146]
+          - paragraph [ref=e147]: Export dashboard data with active filters. Use CSV for spreadsheet workflows and JSON for pipeline automation.
+          - generic [ref=e148]:
+            - generic [ref=e149]:
+              - generic [ref=e150]: Report type
+              - combobox "Report type" [ref=e151]:
+                - option "Full" [selected]
+                - option "Overview"
+                - option "Generations"
+                - option "Users"
+                - option "Sessions"
+            - generic [ref=e152]:
+              - generic [ref=e153]: Format
+              - combobox "Format" [ref=e154]:
+                - option "CSV" [selected]
+                - option "JSON"
+            - button "Export Report" [ref=e156]
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - heading "Top Error Types" [level=3] [ref=e159]
+              - list [ref=e160]:
+                - listitem [ref=e161]: No generation errors recorded.
+            - generic [ref=e162]:
+              - heading "Daily Sessions Trend" [level=3] [ref=e163]
+              - list [ref=e164]:
+                - listitem [ref=e165]: No session trend data.
+        - article [ref=e166]:
+          - heading "System Health" [level=2] [ref=e167]
+          - generic [ref=e168]:
+            - generic [ref=e169]:
+              - paragraph [ref=e170]: Admin API authorization
+              - paragraph [ref=e171]: healthy
+            - generic [ref=e172]:
+              - paragraph [ref=e173]: Last successful sync
+              - paragraph [ref=e174]: No sync yet
+            - generic [ref=e175]:
+              - paragraph [ref=e176]: Export pipeline
+              - paragraph [ref=e177]: Idle
+            - generic [ref=e178]:
+              - paragraph [ref=e179]: Report timestamp
+              - paragraph [ref=e180]: Unavailable
+  - button "Open Next.js Dev Tools" [ref=e186] [cursor=pointer]:
+    - img [ref=e187]

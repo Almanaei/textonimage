@@ -1,0 +1,23 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - main [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - img [ref=e7]
+          - heading "Admin Dashboard" [level=1] [ref=e9]
+          - paragraph [ref=e10]: Sign in to continue
+        - generic [ref=e11]:
+          - generic [ref=e12]:
+            - generic [ref=e13]: Username
+            - textbox "Username" [ref=e14]:
+              - /placeholder: Enter username
+              - text: admin
+          - generic [ref=e15]:
+            - generic [ref=e16]: Password
+            - textbox "Password" [ref=e17]:
+              - /placeholder: Enter password
+              - text: Admin@123456
+          - button "Sign in" [ref=e18]
+  - button "Open Next.js Dev Tools" [ref=e24] [cursor=pointer]:
+    - img [ref=e25]
+  - alert [ref=e28]

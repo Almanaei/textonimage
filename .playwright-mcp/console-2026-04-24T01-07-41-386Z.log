@@ -1,0 +1,206 @@
+[     330ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[     372ms] [LOG] [HMR] connected @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   62068ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:3001/api/admin/auth/login:0
+[   88301ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/sessions?page=1&pageSize=25&sortOrder=desc&sortBy=last_seen_at:0
+[   88443ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/overview:0
+[   88540ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/generations?page=1&pageSize=25&sortOrder=desc:0
+[   88568ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/users?page=1&pageSize=25&sortOrder=desc:0
+[   88671ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/sessions?page=1&pageSize=25&sortOrder=desc&sortBy=last_seen_at:0
+[   88689ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/reports?includeTrends=true:0
+[   88743ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/overview:0
+[   88797ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/generations?page=1&pageSize=25&sortOrder=desc:0
+[   88805ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/users?page=1&pageSize=25&sortOrder=desc:0
+[   88845ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/reports?includeTrends=true:0
+[   94635ms] [WARNING] The resource http://localhost:3001/_next/static/media/caa3a2e1cccd8315-s.p.16t1db8_9y2o~.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/admin:0
+[   94635ms] [WARNING] The resource http://localhost:3001/_next/static/media/797e433ab948586e-s.p.0.q-h669a_dqa.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/admin:0
+[  111548ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/sessions?page=1&pageSize=25&sortOrder=desc&sortBy=last_seen_at:0
+[  111666ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/overview:0
+[  111713ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/generations?page=1&pageSize=25&sortOrder=desc:0
+[  111758ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/users?page=1&pageSize=25&sortOrder=desc:0
+[  111791ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/reports?includeTrends=true:0
+[  112124ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  112125ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/sessions?page=1&pageSize=25&sortOrder=desc&sortBy=last_seen_at:0
+[  112127ms] [LOG] [Fast Refresh] done in 113ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  112284ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/overview:0
+[  112359ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/users?page=1&pageSize=25&sortOrder=desc:0
+[  112373ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/generations?page=1&pageSize=25&sortOrder=desc:0
+[  112408ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/reports?includeTrends=true:0
+[  115418ms] [WARNING] The resource http://localhost:3001/_next/static/media/caa3a2e1cccd8315-s.p.16t1db8_9y2o~.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/admin:0
+[  115418ms] [WARNING] The resource http://localhost:3001/_next/static/media/797e433ab948586e-s.p.0.q-h669a_dqa.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/admin:0
+[  116864ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/sessions?page=1&pageSize=25&sortOrder=desc&sortBy=last_seen_at:0
+[  117014ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/overview:0
+[  117048ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/generations?page=1&pageSize=25&sortOrder=desc:0
+[  117088ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/users?page=1&pageSize=25&sortOrder=desc:0
+[  117113ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/reports?includeTrends=true:0
+[  117319ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/sessions?page=1&pageSize=25&sortOrder=desc&sortBy=last_seen_at:0
+[  117439ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/overview:0
+[  117493ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/users?page=1&pageSize=25&sortOrder=desc:0
+[  117523ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/generations?page=1&pageSize=25&sortOrder=desc:0
+[  117573ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/reports?includeTrends=true:0
+[  117762ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/sessions?page=1&pageSize=25&sortOrder=desc&sortBy=last_seen_at:0
+[  117866ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/overview:0
+[  117933ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/generations?page=1&pageSize=25&sortOrder=desc:0
+[  117986ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/stats/users?page=1&pageSize=25&sortOrder=desc:0
+[  118008ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/admin/reports?includeTrends=true:0
+[  121009ms] [WARNING] The resource http://localhost:3001/_next/static/media/caa3a2e1cccd8315-s.p.16t1db8_9y2o~.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/admin:0
+[  121009ms] [WARNING] The resource http://localhost:3001/_next/static/media/797e433ab948586e-s.p.0.q-h669a_dqa.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/admin:0
+[ 1118376ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1121731ms] [WARNING] The resource http://localhost:3001/_next/static/media/caa3a2e1cccd8315-s.p.16t1db8_9y2o~.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/admin:0
+[ 1121731ms] [WARNING] The resource http://localhost:3001/_next/static/media/797e433ab948586e-s.p.0.q-h669a_dqa.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/admin:0
+[ 1131036ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/admin?_rsc=1nq8r:0
+[ 1131812ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/admin?_rsc=1nq8r:0
+[ 1132070ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/admin:0
+[ 1132816ms] [ERROR] Refused to execute script from 'http://localhost:3001/_next/static/development/_clientMiddlewareManifest.js' because its MIME type ('application/json') is not executable, and strict MIME type checking is enabled. @ http://localhost:3001/admin:0
+[ 1132897ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3001/_next/static/chunks/node_modules_react-dom_0bruynb._.js:15305
+[ 1133066ms] Error: ./middleware.ts:9:31
+Next.js can't recognize the exported `config` field in route. It mustn't be reexported.
+   7 |  */
+   8 |
+>  9 | export { proxy as middleware, config } from "@/proxy";
+     |                               ^^^^^^
+  10 |
+
+The exported configuration object in a source file needs to have a very specific format from which some properties can be statically parsed at compiled-time.
+
+https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
+
+
+    at <unknown> (Error: ./middleware.ts:9:31)
+    at <unknown> (https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
+    at Object.getCompilationErrors (file://C:\Users\Almannai\Desktop\textonimage\app\node_modules\next\dist\server\dev\hot-reloader-turbopack.js:1175:55)
+    at DevBundlerService.getCompilationError (file://C:\Users\Almannai\Desktop\textonimage\app\node_modules\next\dist\server\lib\dev-bundler-service.js:44:55)
+    at DevServer.getCompilationError (file://C:\Users\Almannai\Desktop\textonimage\app\node_modules\next\dist\server\dev\next-dev-server.js:719:42)
+    at DevServer.findPageComponents (file://C:\Users\Almannai\Desktop\textonimage\app\node_modules\next\dist\server\dev\next-dev-server.js:689:43)
+    at async DevServer.renderErrorToResponseImpl (file://C:\Users\Almannai\Desktop\textonimage\app\node_modules\next\dist\server\base-server.js:1686:30)
+[ 1133063ms] [LOG] [HMR] connected @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1133128ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3001/favicon.ico:0
+[ 1133707ms] [ERROR] ./middleware.ts:9:31
+Next.js can't recognize the exported `config` field in route. It mustn't be reexported.
+   7 |  */
+   8 |
+>  9 | export { proxy as middleware, config } from "@/proxy";
+     |                               ^^^^^^
+  10 |
+
+The exported configuration object in a source file needs to have a very specific format from which some properties can be statically parsed at compiled-time.
+
+https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[ 1133871ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1151014ms] [ERROR] ./middleware.ts:9:31
+Next.js can't recognize the exported `config` field in route. It mustn't be reexported.
+   7 |  */
+   8 |
+>  9 | export { proxy as middleware, config } from "@/proxy";
+     |                               ^^^^^^
+  10 |
+
+The exported configuration object in a source file needs to have a very specific format from which some properties can be statically parsed at compiled-time.
+
+https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[ 1151119ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1170584ms] [ERROR] ./middleware.ts:9:31
+Next.js can't recognize the exported `config` field in route. It mustn't be reexported.
+   7 |  */
+   8 |
+>  9 | export { proxy as middleware, config } from "@/proxy";
+     |                               ^^^^^^
+  10 |
+
+The exported configuration object in a source file needs to have a very specific format from which some properties can be statically parsed at compiled-time.
+
+https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[ 1170688ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1170689ms] [ERROR] ./middleware.ts:9:31
+Next.js can't recognize the exported `config` field in route. It mustn't be reexported.
+   7 |  */
+   8 |
+>  9 | export { proxy as middleware, config } from "@/proxy";
+     |                               ^^^^^^
+  10 |
+
+The exported configuration object in a source file needs to have a very specific format from which some properties can be statically parsed at compiled-time.
+
+https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[ 1170792ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1171324ms] [ERROR] ./middleware.ts:9:31
+Next.js can't recognize the exported `config` field in route. It mustn't be reexported.
+   7 |  */
+   8 |
+>  9 | export { proxy as middleware, config } from "@/proxy";
+     |                               ^^^^^^
+  10 |
+
+The exported configuration object in a source file needs to have a very specific format from which some properties can be statically parsed at compiled-time.
+
+https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[ 1171429ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1171481ms] [ERROR] ./middleware.ts:9:31
+Next.js can't recognize the exported `config` field in route. It mustn't be reexported.
+   7 |  */
+   8 |
+>  9 | export { proxy as middleware, config } from "@/proxy";
+     |                               ^^^^^^
+  10 |
+
+The exported configuration object in a source file needs to have a very specific format from which some properties can be statically parsed at compiled-time.
+
+https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[ 1171599ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1192728ms] [ERROR] ./middleware.ts:9:31
+Next.js can't recognize the exported `config` field in route. It mustn't be reexported.
+   7 |  */
+   8 |
+>  9 | export { proxy as middleware, config } from "@/proxy";
+     |                               ^^^^^^
+  10 |
+
+The exported configuration object in a source file needs to have a very specific format from which some properties can be statically parsed at compiled-time.
+
+https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[ 1192793ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1196512ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/admin:0
+[ 1197340ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3001/_next/static/chunks/node_modules_react-dom_0bruynb._.js:15305
+[ 1197374ms] Error: Could not parse module '[project]/middleware.ts', file not found
+    at module evaluation (file://C:\Users\Almannai\Desktop\textonimage\app\.next\dev\server\edge\chunks\[root-of-the-server]__0ervz_w._.js:304:11)
+    at <unknown> (file://C:\Users\Almannai\Desktop\textonimage\app\.next\dev\server\edge\chunks\turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_06cpln7.js:1307:27)
+    at runModuleExecutionHooks (file://C:\Users\Almannai\Desktop\textonimage\app\.next\dev\server\edge\chunks\turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_06cpln7.js:1649:9)
+    at instantiateModuleShared (file://C:\Users\Almannai\Desktop\textonimage\app\.next\dev\server\edge\chunks\turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_06cpln7.js:1305:9)
+    at instantiateModule (file://C:\Users\Almannai\Desktop\textonimage\app\.next\dev\server\edge\chunks\turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_06cpln7.js:1621:12)
+    at getOrInstantiateModuleFromParent (file://C:\Users\Almannai\Desktop\textonimage\app\.next\dev\server\edge\chunks\turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_06cpln7.js:1604:12)
+    at DevContext.esmImport [as i] (file://C:\Users\Almannai\Desktop\textonimage\app\.next\dev\server\edge\chunks\turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_06cpln7.js:278:20)
+    at module evaluation (file://C:\Users\Almannai\Desktop\textonimage\app\.next\dev\server\edge\chunks\[root-of-the-server]__0ervz_w._.js:317:160)
+    at <unknown> (file://C:\Users\Almannai\Desktop\textonimage\app\.next\dev\server\edge\chunks\turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_06cpln7.js:1307:27)
+    at runModuleExecutionHooks (file://C:\Users\Almannai\Desktop\textonimage\app\.next\dev\server\edge\chunks\turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_06cpln7.js:1649:9)
+[ 1197402ms] [LOG] [HMR] connected @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1197529ms] [ERROR] Refused to execute script from 'http://localhost:3001/_next/static/development/_clientMiddlewareManifest.js' because its MIME type ('application/json') is not executable, and strict MIME type checking is enabled. @ http://localhost:3001/admin:0
+[ 1202798ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1203674ms] [LOG] [Fast Refresh] done in 988ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1203781ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1210315ms] [LOG] [Fast Refresh] done in 6640ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1210420ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1210930ms] [LOG] [Fast Refresh] done in 614ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1211045ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1211481ms] [LOG] [Fast Refresh] done in 550ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1211587ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1221532ms] [LOG] [Fast Refresh] done in 10051ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1221653ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1222050ms] [LOG] [Fast Refresh] done in 511ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1222151ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1228012ms] [LOG] [Fast Refresh] done in 5963ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1228180ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1231185ms] [LOG] [Fast Refresh] done in 3109ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1231292ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1436032ms] [LOG] [Fast Refresh] done in 204846ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1436273ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1436288ms] [LOG] [Fast Refresh] done in 254ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1436429ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1436461ms] [LOG] [Fast Refresh] done in 168ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1437429ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1437889ms] [LOG] [Fast Refresh] done in 578ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1438499ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1438720ms] [LOG] [Fast Refresh] done in 330ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1438969ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1439039ms] [LOG] [Fast Refresh] done in 199ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1439256ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1439831ms] [LOG] [Fast Refresh] done in 720ms @ http://localhost:3001/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1226
+[ 1439926ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/admin:0

@@ -1,0 +1,8 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - img "شهادتك" [ref=e66]
+    - button "تحميل الشهادة" [active] [ref=e67]:
+      - img [ref=e68]
+      - text: تحميل الشهادة
+    - button "إنشاء شهادة أخرى" [ref=e70]
+  - alert [ref=e6]

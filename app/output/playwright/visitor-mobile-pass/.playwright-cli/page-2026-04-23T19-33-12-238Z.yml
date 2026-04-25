@@ -1,0 +1,20 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - img "نموذج الشهادة" [ref=e7]
+    - generic:
+      - img "شكراً"
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: الاسم بالعربي
+        - textbox "الاسم بالعربي" [disabled] [ref=e11]:
+          - /placeholder: "مثال: سالم أحمد المناعي"
+          - text: سالم احمد المناعي
+      - generic [ref=e12]:
+        - generic [ref=e13]: البريد الإلكتروني
+        - textbox "البريد الإلكتروني" [disabled] [ref=e14]:
+          - /placeholder: example@email.com
+          - text: mobile1@example.com
+      - button "جارٍ الإنشاء…" [disabled] [ref=e17]:
+        - img [ref=e18]
+        - text: جارٍ الإنشاء…
+  - alert [ref=e6]

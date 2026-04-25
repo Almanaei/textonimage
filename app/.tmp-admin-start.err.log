@@ -1,0 +1,24 @@
+⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+[db] DATABASE_URL not set — analytics and event tracking are disabled.
+[db] DATABASE_URL not set — analytics and event tracking are disabled.
+[admin] {
+  scope: 'admin_api',
+  event: 'admin_access_unauthorized',
+  route: '/api/admin/stats/overview',
+  permission: 'admin:read',
+  status: 401
+}
+[admin] {
+  scope: 'admin_api',
+  event: 'admin_access_unauthorized',
+  route: '/api/admin/stats/sessions',
+  permission: 'admin:read',
+  status: 401
+}
+[admin] {
+  scope: 'admin_api',
+  event: 'admin_access_forbidden',
+  route: '/api/admin/reports/export',
+  permission: 'admin:export',
+  status: 403
+}

@@ -1,0 +1,15 @@
+- generic [ref=e5]:
+  - img "Slide 1" [ref=e8]
+  - img "Slide 2" [ref=e11]
+  - generic [ref=e13]:
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - textbox "الأسم الاول"
+      - generic [ref=e18]:
+        - textbox "أسم العائلة"
+      - generic [ref=e19]:
+        - textbox "رقم الهاتف"
+      - button "ارسال"
+    - generic [ref=e20]:
+      - button "":
+        - generic: 

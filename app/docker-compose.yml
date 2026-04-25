@@ -1,0 +1,66 @@
+services:
+  # ── PostgreSQL ───────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: arabic_image_gen
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "55433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d arabic_image_gen"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Migration runner (one-shot) ───────────────────────────────────────────────
+  migrate:
+    build:
+      context: .
+      target: builder
+    command: npx tsx scripts/migrate.ts
+    environment:
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-changeme}@db:5432/arabic_image_gen
+      PGSSLMODE: disable
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  # ── Next.js app ───────────────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      target: runner
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-changeme}@db:5432/arabic_image_gen
+      STATS_SECRET: ${STATS_SECRET:?STATS_SECRET must be set}
+      ADMIN_API_KEYS: ${ADMIN_API_KEYS:?ADMIN_API_KEYS must be set}
+      ADMIN_AUTH_MAX_ATTEMPTS: ${ADMIN_AUTH_MAX_ATTEMPTS:-30}
+      ADMIN_AUTH_WINDOW_MS: ${ADMIN_AUTH_WINDOW_MS:-60000}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-10}
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-60000}
+      PGSSLMODE: disable
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: ${NEXT_TELEMETRY_DISABLED:-1}
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api/generate || true"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:

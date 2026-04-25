@@ -1,0 +1,11 @@
+
+> app@0.1.0 start
+> next start
+
+▲ Next.js 16.2.4
+- Local:         http://localhost:3000
+- Network:       http://172.20.176.1:3000
+✓ Ready in 439ms
+[/api/generate] success { event: 'generation_success', latencyMs: 2557 }
+[/api/generate] success { event: 'generation_success', latencyMs: 4027 }
+[/api/generate] success { event: 'generation_success', latencyMs: 3278 }

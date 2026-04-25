@@ -1,0 +1,584 @@
+{
+  "project": {
+    "id": "arabic-name-image-generator-backend",
+    "name": "Arabic Name Image Generator Backend",
+    "scope": "backend-only",
+    "description": "Backend, image rendering engine, tracking, analytics, QA, deployment, and security for the Arabic Name Image Generator system."
+  },
+  "orchestrator": {
+    "mode": "task_graph",
+    "ready_rule": "A task is READY when all dependency task ids are in DONE state.",
+    "allowed_statuses": ["PENDING", "READY", "IN_PROGRESS", "DONE", "NEEDS_REVISION", "BLOCKED"],
+    "execution_rules": [
+      "Load graph",
+      "Find all READY tasks",
+      "Route each READY task to its owner_agent",
+      "Execute with the matching prompt pack",
+      "Validate output against acceptance_criteria",
+      "Mark task as DONE, NEEDS_REVISION, or BLOCKED",
+      "Repeat until all tasks are DONE or terminally BLOCKED"
+    ],
+    "constraints": {
+      "frontend_locked": true,
+      "frontend_modification_allowed": false,
+      "frontend_role": "existing API client only",
+      "focus_areas": [
+        "backend APIs",
+        "image generation engine",
+        "tracking",
+        "analytics",
+        "QA",
+        "DevOps",
+        "security"
+      ]
+    }
+  },
+  "milestones": [
+    {
+      "id": "M1",
+      "name": "Product Validation",
+      "description": "Validate backend-only scope."
+    },
+    {
+      "id": "M2",
+      "name": "Backend Architecture",
+      "description": "Define backend, rendering, and analytics architecture."
+    },
+    {
+      "id": "M3",
+      "name": "Image Engine",
+      "description": "Build Arabic text layout and PNG rendering engine."
+    },
+    {
+      "id": "M4",
+      "name": "Core Backend APIs",
+      "description": "Build generation API and optional persistence."
+    },
+    {
+      "id": "M5",
+      "name": "Tracking and Analytics",
+      "description": "Build event collection, storage, sessions, and metrics."
+    },
+    {
+      "id": "M6",
+      "name": "QA and Validation",
+      "description": "Validate backend behavior, rendering, analytics, and performance."
+    },
+    {
+      "id": "M7",
+      "name": "Deployment and Security",
+      "description": "Deploy backend and validate monitoring and security."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T-PM-001",
+      "milestone_id": "M1",
+      "title": "Validate Backend Scope",
+      "owner_agent": "Product Manager Agent",
+      "description": "Confirm that project scope is backend-only and excludes frontend redesign or rebuild.",
+      "dependencies": [],
+      "inputs": [
+        "PRD",
+        "Blueprint",
+        "Current project constraints"
+      ],
+      "deliverables": [
+        "Backend-only scope document"
+      ],
+      "acceptance_criteria": [
+        "No UI build tasks are included",
+        "Backend, image engine, analytics, QA, DevOps, and security scope are explicit",
+        "Frontend is marked as locked and integration-only"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-ARCH-001",
+      "milestone_id": "M2",
+      "title": "Define Backend Architecture",
+      "owner_agent": "System Architect Agent",
+      "description": "Design backend architecture including API layer, image engine, and analytics boundaries.",
+      "dependencies": ["T-PM-001"],
+      "inputs": [
+        "Backend-only scope document",
+        "PRD",
+        "Blueprint"
+      ],
+      "deliverables": [
+        "Architecture document",
+        "Service boundary definition"
+      ],
+      "acceptance_criteria": [
+        "Clear separation between API, image engine, and analytics services",
+        "Component responsibilities are defined",
+        "Architecture aligns with backend-only scope"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-ARCH-002",
+      "milestone_id": "M2",
+      "title": "Define Image Rendering Strategy",
+      "owner_agent": "System Architect Agent",
+      "description": "Choose rendering approach and define flow for Arabic text rendering onto static templates.",
+      "dependencies": ["T-ARCH-001"],
+      "inputs": [
+        "Architecture document",
+        "Template constraints",
+        "Arabic rendering requirements"
+      ],
+      "deliverables": [
+        "Rendering strategy decision",
+        "Rendering flow design"
+      ],
+      "acceptance_criteria": [
+        "Rendering approach is explicitly selected",
+        "Arabic support is confirmed",
+        "Performance is acceptable for target load"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-ARCH-003",
+      "milestone_id": "M2",
+      "title": "Define Data and Tracking Architecture",
+      "owner_agent": "System Architect Agent",
+      "description": "Design data model and event tracking architecture for analytics and reporting.",
+      "dependencies": ["T-ARCH-001"],
+      "inputs": [
+        "Architecture document",
+        "Analytics requirements"
+      ],
+      "deliverables": [
+        "Event system design",
+        "Database schema"
+      ],
+      "acceptance_criteria": [
+        "Architecture is scalable",
+        "Query patterns are supported efficiently",
+        "Tracking data model is extensible"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-IMG-001",
+      "milestone_id": "M3",
+      "title": "Implement Text Layout Engine",
+      "owner_agent": "Image Processing Agent",
+      "description": "Build logic to fit Arabic names inside a constrained area with RTL support and line limits.",
+      "dependencies": ["T-ARCH-002"],
+      "inputs": [
+        "Rendering strategy",
+        "Template config",
+        "Font config"
+      ],
+      "deliverables": [
+        "Text fitting logic"
+      ],
+      "acceptance_criteria": [
+        "RTL is supported",
+        "Maximum 2 lines are supported",
+        "Dynamic font sizing works for long names"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-IMG-002",
+      "milestone_id": "M3",
+      "title": "Implement Image Rendering",
+      "owner_agent": "Image Processing Agent",
+      "description": "Generate high-resolution PNG output with correctly placed Arabic text.",
+      "dependencies": ["T-IMG-001"],
+      "inputs": [
+        "Text fitting logic",
+        "Template asset",
+        "Font asset"
+      ],
+      "deliverables": [
+        "PNG rendering implementation"
+      ],
+      "acceptance_criteria": [
+        "No text overflow",
+        "Correct alignment within designated area",
+        "High-resolution PNG output is produced"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-BE-001",
+      "milestone_id": "M4",
+      "title": "Define API Contract",
+      "owner_agent": "Backend Engineer Agent",
+      "description": "Define the contract for the image generation API.",
+      "dependencies": ["T-ARCH-001"],
+      "inputs": [
+        "Architecture document",
+        "PRD"
+      ],
+      "deliverables": [
+        "/api/generate specification"
+      ],
+      "acceptance_criteria": [
+        "Request schema is defined",
+        "Response schema is defined",
+        "Error model is defined"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-BE-002",
+      "milestone_id": "M4",
+      "title": "Implement Input Validation",
+      "owner_agent": "Backend Engineer Agent",
+      "description": "Implement validation rules for image generation input payloads.",
+      "dependencies": ["T-BE-001"],
+      "inputs": [
+        "/api/generate specification"
+      ],
+      "deliverables": [
+        "Validation logic"
+      ],
+      "acceptance_criteria": [
+        "Email validation is enforced",
+        "Name constraints are enforced",
+        "Invalid requests return structured errors"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-BE-003",
+      "milestone_id": "M4",
+      "title": "Implement Image Generation API",
+      "owner_agent": "Backend Engineer Agent",
+      "description": "Build the /api/generate endpoint and integrate it with the rendering engine.",
+      "dependencies": ["T-BE-002", "T-IMG-002"],
+      "inputs": [
+        "Validation logic",
+        "Rendering implementation"
+      ],
+      "deliverables": [
+        "Working /api/generate endpoint"
+      ],
+      "acceptance_criteria": [
+        "Returns PNG or image URL",
+        "Handles operational errors correctly",
+        "Response time is under 3 seconds for expected conditions"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-BE-004",
+      "milestone_id": "M4",
+      "title": "Implement Storage Optional Path",
+      "owner_agent": "Backend Engineer Agent",
+      "description": "Implement optional database persistence for generated records if persistence is enabled.",
+      "dependencies": ["T-ARCH-003"],
+      "inputs": [
+        "Database schema",
+        "Persistence decision"
+      ],
+      "deliverables": [
+        "Database integration"
+      ],
+      "acceptance_criteria": [
+        "Data is stored correctly",
+        "No significant performance regression is introduced"
+      ],
+      "status": "PENDING",
+      "optional": true
+    },
+    {
+      "id": "T-BE-101",
+      "milestone_id": "M5",
+      "title": "Create Event Tracking API",
+      "owner_agent": "Backend Engineer Agent",
+      "description": "Build the event ingestion endpoint for analytics tracking.",
+      "dependencies": ["T-ARCH-003"],
+      "inputs": [
+        "Event architecture",
+        "Event schema"
+      ],
+      "deliverables": [
+        "/api/track endpoint"
+      ],
+      "acceptance_criteria": [
+        "Accepts valid events",
+        "Validates event schema",
+        "Rejects malformed payloads with structured errors"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-BE-102",
+      "milestone_id": "M5",
+      "title": "Implement Event Storage",
+      "owner_agent": "Backend Engineer Agent",
+      "description": "Persist tracking events in the analytics datastore.",
+      "dependencies": ["T-BE-101"],
+      "inputs": [
+        "/api/track endpoint",
+        "Database schema"
+      ],
+      "deliverables": [
+        "Event storage implementation"
+      ],
+      "acceptance_criteria": [
+        "Events are stored reliably",
+        "Indexes support analytics queries",
+        "No data loss under normal operation"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-BE-103",
+      "milestone_id": "M5",
+      "title": "Implement Session Tracking",
+      "owner_agent": "Backend Engineer Agent",
+      "description": "Add session identification and tracking model for users and visitors.",
+      "dependencies": ["T-BE-102"],
+      "inputs": [
+        "Event storage implementation"
+      ],
+      "deliverables": [
+        "Session tracking system"
+      ],
+      "acceptance_criteria": [
+        "Unique session IDs are supported",
+        "Session-level user activity can be linked"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-BE-104",
+      "milestone_id": "M5",
+      "title": "Build Aggregation Engine",
+      "owner_agent": "Backend Engineer Agent",
+      "description": "Create logic to compute KPIs and aggregated analytics data from stored events.",
+      "dependencies": ["T-BE-102"],
+      "inputs": [
+        "Event storage implementation",
+        "KPI definitions"
+      ],
+      "deliverables": [
+        "Aggregation logic"
+      ],
+      "acceptance_criteria": [
+        "Core KPIs are computed accurately",
+        "Queries are performant for expected dataset sizes"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-BE-105",
+      "milestone_id": "M5",
+      "title": "Create Stats APIs",
+      "owner_agent": "Backend Engineer Agent",
+      "description": "Expose metrics and analytics summaries through backend endpoints.",
+      "dependencies": ["T-BE-104"],
+      "inputs": [
+        "Aggregation logic"
+      ],
+      "deliverables": [
+        "/stats endpoints"
+      ],
+      "acceptance_criteria": [
+        "Endpoints return accurate metrics",
+        "Queries are fast",
+        "Date filters and core dimensions are supported"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-QA-001",
+      "milestone_id": "M6",
+      "title": "Backend Functional Testing",
+      "owner_agent": "QA Agent",
+      "description": "Validate backend endpoints and main execution flows.",
+      "dependencies": ["T-BE-003"],
+      "inputs": [
+        "/api/generate implementation",
+        "API contract"
+      ],
+      "deliverables": [
+        "Backend functional test report"
+      ],
+      "acceptance_criteria": [
+        "All backend API flows pass",
+        "No critical functional defects remain"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-QA-002",
+      "milestone_id": "M6",
+      "title": "Image Output Validation",
+      "owner_agent": "QA Agent",
+      "description": "Validate image generation output quality, Arabic rendering, and layout behavior.",
+      "dependencies": ["T-IMG-002"],
+      "inputs": [
+        "Rendering implementation",
+        "Sample Arabic names"
+      ],
+      "deliverables": [
+        "Image validation report"
+      ],
+      "acceptance_criteria": [
+        "Arabic rendering is correct",
+        "No layout overflow or clipping issues remain",
+        "Output quality meets target resolution"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-QA-003",
+      "milestone_id": "M6",
+      "title": "Analytics Validation",
+      "owner_agent": "QA Agent",
+      "description": "Validate event collection, stored data, and computed metrics for correctness.",
+      "dependencies": ["T-BE-105"],
+      "inputs": [
+        "Tracking APIs",
+        "Stats APIs",
+        "Sample event data"
+      ],
+      "deliverables": [
+        "Analytics validation report"
+      ],
+      "acceptance_criteria": [
+        "Tracked data matches expected actions",
+        "Metrics are accurate and consistent"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-QA-004",
+      "milestone_id": "M6",
+      "title": "Performance Testing",
+      "owner_agent": "QA Agent",
+      "description": "Test performance characteristics of generation and analytics endpoints.",
+      "dependencies": ["T-BE-003", "T-BE-105"],
+      "inputs": [
+        "Generation API",
+        "Stats APIs"
+      ],
+      "deliverables": [
+        "Performance report"
+      ],
+      "acceptance_criteria": [
+        "Generation response time remains under 3 seconds in target conditions",
+        "System remains stable under expected load"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-DEVOPS-001",
+      "milestone_id": "M7",
+      "title": "Deploy Backend",
+      "owner_agent": "DevOps Agent",
+      "description": "Deploy backend services to the target environment.",
+      "dependencies": ["T-QA-004"],
+      "inputs": [
+        "Validated backend implementation",
+        "Infrastructure decisions"
+      ],
+      "deliverables": [
+        "Deployed backend services"
+      ],
+      "acceptance_criteria": [
+        "Deployment is stable",
+        "Environment variables and runtime config are correctly set"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-DEVOPS-002",
+      "milestone_id": "M7",
+      "title": "Setup Monitoring",
+      "owner_agent": "DevOps Agent",
+      "description": "Implement logs, health checks, and alerting for backend operations.",
+      "dependencies": ["T-DEVOPS-001"],
+      "inputs": [
+        "Deployed backend services"
+      ],
+      "deliverables": [
+        "Monitoring and logging setup"
+      ],
+      "acceptance_criteria": [
+        "Logs are accessible",
+        "Operational alerts are configured",
+        "Health status can be observed"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "T-SEC-001",
+      "milestone_id": "M7",
+      "title": "Security Review",
+      "owner_agent": "Security Agent",
+      "description": "Perform security review for backend endpoints, data handling, and deployment posture.",
+      "dependencies": ["T-DEVOPS-001"],
+      "inputs": [
+        "Backend implementation",
+        "Deployment configuration"
+      ],
+      "deliverables": [
+        "Security review report"
+      ],
+      "acceptance_criteria": [
+        "No major vulnerabilities remain open",
+        "Input validation is enforced",
+        "Core backend security controls are present"
+      ],
+      "status": "PENDING"
+    }
+  ],
+  "agent_routing": {
+    "Product Manager Agent": [
+      "T-PM-001"
+    ],
+    "System Architect Agent": [
+      "T-ARCH-001",
+      "T-ARCH-002",
+      "T-ARCH-003"
+    ],
+    "Image Processing Agent": [
+      "T-IMG-001",
+      "T-IMG-002"
+    ],
+    "Backend Engineer Agent": [
+      "T-BE-001",
+      "T-BE-002",
+      "T-BE-003",
+      "T-BE-004",
+      "T-BE-101",
+      "T-BE-102",
+      "T-BE-103",
+      "T-BE-104",
+      "T-BE-105"
+    ],
+    "QA Agent": [
+      "T-QA-001",
+      "T-QA-002",
+      "T-QA-003",
+      "T-QA-004"
+    ],
+    "DevOps Agent": [
+      "T-DEVOPS-001",
+      "T-DEVOPS-002"
+    ],
+    "Security Agent": [
+      "T-SEC-001"
+    ]
+  },
+  "final_outputs": [
+    "Working /api/generate endpoint",
+    "Arabic-capable image rendering engine",
+    "Working /api/track endpoint",
+    "Stored tracking events and session model",
+    "Working /stats endpoints",
+    "QA validation reports",
+    "Deployment and monitoring setup",
+    "Security review report"
+  ]
+}

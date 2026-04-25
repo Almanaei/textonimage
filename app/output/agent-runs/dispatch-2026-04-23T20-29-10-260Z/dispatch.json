@@ -1,0 +1,37 @@
+{
+  "task": "harden admin analytics api and db",
+  "changedFiles": [
+    "app/api/stats/route.ts",
+    "app/scripts/migrate.ts"
+  ],
+  "selectedAgentId": "backend-agent",
+  "selectedAgentFile": "../agents/ai_agents_skills/agents/backend-agent.md",
+  "requiredSkills": [
+    "api-route-design-skill",
+    "validation-and-sanitization-skill",
+    "postgresql-schema-design-skill",
+    "storage-strategy-skill",
+    "testing-strategy-skill"
+  ],
+  "missingSkills": [],
+  "workflow": [
+    "orchestrator-agent",
+    "backend-agent",
+    "qa-agent",
+    "devops-agent",
+    "observability-agent"
+  ],
+  "reason": "backend-agent: task mentions \"api\"; backend-agent: task mentions \"db\"; backend-agent: changed path \"app/api/stats/route.ts\"; backend-agent: changed path \"app/scripts/migrate.ts\"",
+  "scores": {
+    "backend-agent": 10,
+    "devops-agent": 0,
+    "frontend-agent": 0,
+    "image-rendering-agent": 0,
+    "observability-agent": 0,
+    "orchestrator-agent": 0,
+    "product-agent": 0,
+    "qa-agent": 0,
+    "solution-architect-agent": 0
+  },
+  "generatedAt": "2026-04-23T20:29:10.259Z"
+}

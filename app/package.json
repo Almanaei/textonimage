@@ -1,0 +1,49 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "qa:track": "tsx scripts/test-track.ts",
+    "qa:stats": "tsx scripts/test-stats.ts",
+    "qa:analytics": "npm run qa:track && npm run qa:stats",
+    "qa:admin": "tsx scripts/test-admin-api.ts",
+    "agent:plan": "tsx scripts/agent-dispatcher.ts",
+    "agent:implement": "tsx scripts/run-agent.ts --phase implement",
+    "agent:verify": "tsx scripts/agent-verify.ts",
+    "agent:release-gate": "tsx scripts/agent-release-gate.ts",
+    "admin:create-password": "tsx scripts/create-admin-password.ts"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.99",
+    "next": "16.2.4",
+    "pg": "^8.20.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "sharp": "^0.34.5",
+    "zod": "^4.3.6"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/pg": "^8.20.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.4",
+    "tailwindcss": "^4",
+    "tsx": "^4.21.0",
+    "typescript": "^5",
+    "vitest": "^4.1.5"
+  }
+}

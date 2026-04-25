@@ -1,0 +1,9 @@
+
+> app@0.1.0 dev
+> next dev --port 3010
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3010
+- Network:       http://172.20.176.1:3010
+✓ Ready in 1430ms
+[?25h
