@@ -1,0 +1,13 @@
+# AI / tooling folders
+.qa/
+.prompts/
+.imagesorcery-mcp/
+.playwright-mcp/
+.docs/
+.codex/
+.agents/
+.github/
+References/
+AGENT.md
+backend-setup.md
+backend-setup.json
