@@ -26,8 +26,8 @@ function resolveSslConfig(databaseUrl) {
 async function migrate() {
   const url = process.env.DATABASE_URL;
   if (!url) {
-    console.error("ERROR: DATABASE_URL environment variable is required.");
-    process.exit(1);
+    console.log("DATABASE_URL not set — skipping migrations (analytics disabled).");
+    return;
   }
 
   const pool = new Pool({ connectionString: url, ssl: resolveSslConfig(url) });
