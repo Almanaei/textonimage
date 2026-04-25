@@ -52,6 +52,14 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Migration script (plain JS — pg is available in the standalone node_modules)
+RUN mkdir -p scripts
+COPY --chown=nextjs:nodejs scripts/migrate.mjs ./scripts/migrate.mjs
+
+# Startup script: runs migration then starts Next.js
+COPY --chown=nextjs:nodejs start.sh ./start.sh
+RUN chmod +x ./start.sh
+
 USER nextjs
 
 EXPOSE 3000
@@ -59,4 +67,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["node", "server.js"]
+# start.sh runs migrations first, then exec's into server.js
+CMD ["sh", "start.sh"]
