@@ -8,6 +8,14 @@
 .agents/
 .github/
 References/
-AGENT.md
+
+AGENTS.md
+Backend_Setup.md
+backend_setup.json
 backend-setup.md
 backend-setup.json
+
+# Root-level test/screenshot images
+*.png
+*.jpg
+*.jpeg
