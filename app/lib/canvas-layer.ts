@@ -44,15 +44,26 @@ function ensureFontRegistered(): void {
   }
 }
 
+// ─── Output type ──────────────────────────────────────────────────────────────
+
+/** Raw RGBA pixel data — avoids PNG encode/decode round-trip with sharp. */
+export interface RawTextLayer {
+  data: Buffer;
+  width: number;
+  height: number;
+}
+
 // ─── Builder ──────────────────────────────────────────────────────────────────
 
 /**
- * Build a transparent PNG Buffer at OUTPUT_WIDTH × OUTPUT_HEIGHT.
- * All layout coordinates (fontSize, centerX, lineYPositions) come from
- * the 1015-px layout engine and are scaled up by SCALE so text is
- * rasterised at full output resolution — never upscaled.
+ * Build a raw RGBA text layer at OUTPUT_WIDTH × OUTPUT_HEIGHT.
+ * Returns raw pixel bytes instead of a PNG to skip an encode+decode
+ * round-trip when sharp composites the layer.
+ *
+ * All layout coordinates come from the 1015-px layout engine and are
+ * scaled up by SCALE so text is rasterised at full output resolution.
  */
-export function buildCanvasTextLayer(layout: TextLayout): Buffer {
+export function buildCanvasTextLayer(layout: TextLayout): RawTextLayer {
   ensureFontRegistered();
 
   const canvas = createCanvas(OUTPUT_WIDTH, OUTPUT_HEIGHT);
@@ -84,5 +95,11 @@ export function buildCanvasTextLayer(layout: TextLayout): Buffer {
   ctx.font = `bold ${scaledYearFontSize}px "${FONT_FAMILY}"`;
   ctx.fillText(YEAR_TEXT, scaledCenterX, scaledYearY);
 
-  return canvas.toBuffer("image/png");
+  // Return raw RGBA pixels — no intermediate PNG encode
+  const imageData = ctx.getImageData(0, 0, OUTPUT_WIDTH, OUTPUT_HEIGHT);
+  return {
+    data: Buffer.from(imageData.data.buffer),
+    width: OUTPUT_WIDTH,
+    height: OUTPUT_HEIGHT,
+  };
 }

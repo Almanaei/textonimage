@@ -17,6 +17,7 @@ import sharp from "sharp";
 import path from "path";
 import fs from "fs/promises";
 import { templateConfig } from "./template-config";
+import type { RawTextLayer } from "./canvas-layer";
 
 const NATIVE_WIDTH = templateConfig.template.width; // 1015
 const OUTPUT_WIDTH = 2400;
@@ -145,10 +146,10 @@ getPreparedQR().catch((err) =>
  * Composite the certificate template, QR overlay, and text layer into a
  * single PNG. Layer order (bottom → top): template → QR → text.
  *
- * @param textLayer - Transparent PNG Buffer produced by `buildCanvasTextLayer`
+ * @param textLayer - Raw RGBA pixel data from `buildCanvasTextLayer`
  * @returns PNG Buffer of the final composed image
  */
-export async function compositeImage(textLayer: Buffer): Promise<Buffer> {
+export async function compositeImage(textLayer: RawTextLayer): Promise<Buffer> {
   const [tmpl, qr] = await Promise.all([getPreparedTemplate(), getPreparedQR()]);
 
   return sharp(tmpl.data, {
@@ -162,8 +163,14 @@ export async function compositeImage(textLayer: Buffer): Promise<Buffer> {
         top: qr.top,
         blend: "over",
       },
-      { input: textLayer, top: 0, left: 0, blend: "over" },
+      {
+        input: textLayer.data,
+        raw: { width: textLayer.width, height: textLayer.height, channels: 4 },
+        top: 0,
+        left: 0,
+        blend: "over",
+      },
     ])
-    .png({ compressionLevel: 6 })
+    .png({ compressionLevel: 3 })
     .toBuffer();
 }

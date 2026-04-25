@@ -26,6 +26,17 @@ const nextConfig: NextConfig = {
         source: "/(.*)",
         headers: staticSecurityHeaders,
       },
+      {
+        // Static image assets: cache for 1 year in the browser.
+        // These files never change between deployments (content-addressed by filename).
+        source: "/assets/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
 };
