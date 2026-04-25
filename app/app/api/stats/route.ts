@@ -22,15 +22,9 @@ import { createHmac, timingSafeEqual } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { buildStatsReport } from "@/lib/aggregation";
 
-const STATS_SECRET = process.env.STATS_SECRET ?? "";
+export const dynamic = "force-dynamic";
 
-// Validate at module load time — fail fast on misconfiguration.
-if (process.env.NODE_ENV === "production" && STATS_SECRET.length < 32) {
-  throw new Error(
-    "STATS_SECRET must be at least 32 characters in production. " +
-      "Generate one with: openssl rand -hex 32",
-  );
-}
+const STATS_SECRET = process.env.STATS_SECRET ?? "";
 
 /**
  * Constant-time token comparison using HMAC to eliminate length side-channels.
@@ -38,7 +32,7 @@ if (process.env.NODE_ENV === "production" && STATS_SECRET.length < 32) {
  * before comparison, so timing reveals nothing about the secret's value or length.
  */
 function isValidToken(provided: string): boolean {
-  if (!STATS_SECRET || !provided) return false;
+  if (!STATS_SECRET || STATS_SECRET.length < 32 || !provided) return false;
   const key = Buffer.from(STATS_SECRET, "utf8");
   const expectedDigest = createHmac("sha256", key)
     .update(STATS_SECRET)
