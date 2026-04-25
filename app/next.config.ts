@@ -20,6 +20,16 @@ const staticSecurityHeaders = [
 const nextConfig: NextConfig = {
   output: "standalone",
   serverExternalPackages: ["@napi-rs/canvas", "sharp", "pg"],
+  images: {
+    // Serve AVIF first (30-50% smaller than WebP), fall back to WebP.
+    // Both are auto-converted from the source PNGs by Next.js at runtime.
+    formats: ["image/avif", "image/webp"],
+    // Only generate sizes relevant to a mobile-first single-column layout.
+    // Max container is max-w-sm (384px); 2× DPR = 768px; 3× DPR = 1152px.
+    deviceSizes: [384, 640, 768, 828, 1080, 1200],
+    // Match the display dimensions used in the UI (20px, 384px, 640px)
+    imageSizes: [16, 20, 48, 64, 96, 128, 384],
+  },
   async headers() {
     return [
       {

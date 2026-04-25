@@ -30,6 +30,17 @@ export default function CertificateShell() {
   const [emailError, setEmailError] = useState("");
   const [serverError, setServerError] = useState("");
 
+  // Preload form.png in the background while the welcome screen is visible
+  // so the transition to the form screen is instant.
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "prefetch";
+    link.as = "image";
+    link.href = "/assets/form.png";
+    document.head.appendChild(link);
+    return () => { document.head.removeChild(link); };
+  }, []);
+
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
@@ -137,9 +148,9 @@ export default function CertificateShell() {
           src="/assets/welcome_screen.png"
           alt="مرحباً"
           fill
+          sizes="(max-width: 384px) 100vw, 384px"
           className="object-cover rounded-2xl"
           priority
-          unoptimized
         />
         {/* Start button — pinned to bottom of image */}
         <div className="absolute bottom-[6%] inset-x-0 flex justify-center px-8">
@@ -158,7 +169,7 @@ export default function CertificateShell() {
           className="absolute bottom-[1.5%] inset-x-0 flex justify-center items-center gap-1 group"
         >
           <span className="text-[10px] text-white/35 group-hover:text-white/65 transition tracking-wide">Powered by Proud</span>
-          <Image src="/assets/Bahrain.png" alt="Bahrain" width={20} height={20} className="opacity-35 group-hover:opacity-65 transition" unoptimized />
+          <Image src="/assets/Bahrain.png" alt="Bahrain" width={20} height={20} className="opacity-35 group-hover:opacity-65 transition" />
         </a>
       </div>
     );
@@ -172,9 +183,9 @@ export default function CertificateShell() {
           src="/assets/form.png"
           alt="نموذج الشهادة"
           fill
+          sizes="(max-width: 384px) 100vw, 384px"
           className="object-cover rounded-2xl"
           priority
-          unoptimized
         />
 
         {/* Powered by Proud */}
@@ -184,7 +195,7 @@ export default function CertificateShell() {
           className="absolute bottom-[1.5%] inset-x-0 flex justify-center items-center gap-1 group"
         >
           <span className="text-[10px] text-white/35 group-hover:text-white/65 transition tracking-wide">Powered by Proud</span>
-          <Image src="/assets/Bahrain.png" alt="Bahrain" width={20} height={20} className="opacity-35 group-hover:opacity-65 transition" unoptimized />
+          <Image src="/assets/Bahrain.png" alt="Bahrain" width={20} height={20} className="opacity-35 group-hover:opacity-65 transition" />
         </a>
         {/* Form overlaid below the logo — logo occupies the top ~38% of the image */}
         <form
