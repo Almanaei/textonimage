@@ -62,8 +62,7 @@ export async function generateCertificate(
 ): Promise<Buffer> {
   const { name } = sanitize(input);
 
-  // Prepend fixed prefix so the layout engine sizes and wraps the full phrase
-  const displayText = `مع تحيّات ${name}`;
+  const displayText = name;
 
   const cached = getCached(displayText);
   if (cached) return cached;

@@ -24,8 +24,8 @@ const OUTPUT_WIDTH = 2400;
 /** Scale factor so text is rasterised at output resolution, not upscaled */
 const SCALE = OUTPUT_WIDTH / NATIVE_WIDTH; // ≈ 2.364
 const OUTPUT_HEIGHT = Math.round(NATIVE_HEIGHT * SCALE);
-/** White text matching the reference output */
-const TEXT_COLOR = "#FFFFFF";
+/** Gold text — matches the #D0A040 golden tone used in the welcome screen title */
+const TEXT_COLOR = "#D0A040";
 const FONT_FAMILY = "ArabicCert";
 const FONT_PATH = path.join(process.cwd(), "public", "assets", "Arabic.ttf");
 
