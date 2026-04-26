@@ -241,7 +241,7 @@ export default function CertificateShell() {
               autoComplete="name"
               inputMode="text"
               disabled={loading}
-              className={`w-full rounded-lg border bg-white/15 backdrop-blur-sm px-3 py-2.5 text-sm text-right text-white outline-none transition focus:ring-2 focus:ring-white/60 disabled:opacity-50 font-arabic ${
+              className={`w-full rounded-lg border bg-white/15 backdrop-blur-sm px-3 py-2.5 text-base text-right text-white outline-none transition focus:ring-2 focus:ring-white/60 disabled:opacity-50 font-arabic ${
                 nameError ? "border-red-400" : "border-white/30"
               }`}
             />
@@ -268,7 +268,7 @@ export default function CertificateShell() {
               autoComplete="email"
               inputMode="email"
               disabled={loading}
-              className={`w-full rounded-lg border bg-white/15 backdrop-blur-sm px-3 py-2.5 text-sm text-right text-white outline-none transition focus:ring-2 focus:ring-white/60 disabled:opacity-50 font-arabic ${
+              className={`w-full rounded-lg border bg-white/15 backdrop-blur-sm px-3 py-2.5 text-base text-right text-white outline-none transition focus:ring-2 focus:ring-white/60 disabled:opacity-50 font-arabic ${
                 emailError ? "border-red-400" : "border-white/30"
               }`}
             />
