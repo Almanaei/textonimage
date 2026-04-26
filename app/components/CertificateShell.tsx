@@ -173,7 +173,7 @@ export default function CertificateShell() {
           />
         </div>
         <Image
-          src="/assets/welcome_screen_v4.png"
+          src="/assets/welcome_screen_v5.png"
           alt="مرحباً"
           width={1015}
           height={1801}
@@ -182,16 +182,29 @@ export default function CertificateShell() {
           className="rounded-2xl"
           priority
         />
-        {/* Start button — sits above the GDCD badge (~11.4% from bottom) */}
-        <div className="absolute bottom-[15%] inset-x-0 flex justify-center px-8">
+
+        {/* GDCD badge — sits above the button */}
+        <div className="absolute bottom-[16%] inset-x-0 flex justify-center">
+          <Image
+            src="/assets/gdcd_v1.png"
+            alt="الدفاع المدني"
+            width={72}
+            height={72}
+            style={{ width: 72, height: 72 }}
+          />
+        </div>
+
+        {/* Start button — gold-themed to match app colours */}
+        <div className="absolute bottom-[5%] inset-x-0 flex justify-center px-8">
           <button
             onClick={() => setScreen("form")}
-            className="w-full rounded-xl bg-white/90 backdrop-blur-sm py-4 text-lg font-bold text-gray-900 shadow-lg transition active:scale-95 hover:bg-white font-arabic"
+            className="w-full rounded-xl border-2 border-[#D0A040] bg-black/30 backdrop-blur-sm py-4 text-lg font-bold text-[#D0A040] shadow-lg transition active:scale-95 hover:bg-[#D0A040]/20 font-arabic"
             dir="rtl"
           >
             أرسل شكرك الآن
           </button>
         </div>
+
         {/* Powered by Proud */}
         <a
           href="mailto:admin@thanksbahraincd.com"
