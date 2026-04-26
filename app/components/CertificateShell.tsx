@@ -172,14 +172,8 @@ export default function CertificateShell() {
             alt=""
           />
         </div>
-        {/*
-          unoptimized — bypasses Next.js image optimizer cache so the file is
-          always served fresh from disk (no stale AVIF/WebP cached copy).
-          Combined with the no-cache HTTP header in next.config.ts, any change
-          to welcome_screen.png is visible immediately after a deploy.
-        */}
         <Image
-          src="/assets/welcome_screen.png"
+          src={`/assets/welcome_screen.png?v=${process.env.NEXT_PUBLIC_DEPLOY_ID}`}
           alt="مرحباً"
           width={1015}
           height={1801}
@@ -187,7 +181,6 @@ export default function CertificateShell() {
           style={{ width: "100%", height: "auto", display: "block" }}
           className="rounded-2xl"
           priority
-          unoptimized
         />
 
         {/* Start button — in the dark wave area below the text (text ends ~68% from top) */}

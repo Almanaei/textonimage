@@ -17,9 +17,21 @@ const staticSecurityHeaders = [
   },
 ];
 
+// Unique per-deploy identifier used to bust CDN/browser cache for mutable
+// assets. On Railway this is the git commit SHA (injected automatically).
+// Falls back to build timestamp for local dev.
+const deployId =
+  (process.env.RAILWAY_GIT_COMMIT_SHA ?? "").slice(0, 8) ||
+  Date.now().toString(36);
+
 const nextConfig: NextConfig = {
   output: "standalone",
   serverExternalPackages: ["@napi-rs/canvas", "sharp", "pg"],
+  // Expose the deploy ID to the browser bundle so components can append
+  // ?v=<hash> to mutable asset URLs, forcing a fresh fetch on every deploy.
+  env: {
+    NEXT_PUBLIC_DEPLOY_ID: deployId,
+  },
   images: {
     // Serve AVIF first (30-50% smaller than WebP), fall back to WebP.
     formats: ["image/avif", "image/webp"],
@@ -49,17 +61,6 @@ const nextConfig: NextConfig = {
             key: "Vary",
             value: "Accept",
           },
-        ],
-      },
-      {
-        // welcome_screen.png is a mutable file (replaced without renaming).
-        // This rule MUST come after the /assets/:path* rule above so it wins
-        // for duplicate Cache-Control keys (Next.js applies last match).
-        // no-store: do not cache at all — always fetch from origin.
-        // This guarantees Cloudflare and browsers never serve a stale copy.
-        source: "/assets/welcome_screen.png",
-        headers: [
-          { key: "Cache-Control", value: "no-store" },
         ],
       },
       {
