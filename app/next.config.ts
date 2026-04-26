@@ -22,16 +22,11 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@napi-rs/canvas", "sharp", "pg"],
   images: {
     // Serve AVIF first (30-50% smaller than WebP), fall back to WebP.
-    // Both are auto-converted from the source PNGs by Next.js at runtime.
     formats: ["image/avif", "image/webp"],
-    // Only generate sizes relevant to a mobile-first single-column layout.
-    // Max container is max-w-sm (384px); 2× DPR = 768px; 3× DPR = 1152px.
     deviceSizes: [384, 640, 768, 828, 1080, 1200],
-    // Match the display dimensions used in the UI (20px, 384px, 640px)
     imageSizes: [16, 20, 48, 64, 96, 128, 384],
-    // Cache optimized AVIF/WebP variants for 1 year on the server.
-    // Safe because all changeable assets use versioned filenames (e.g. _v3).
-    // Default is 60 seconds which causes constant unnecessary re-encoding.
+    // 1-year server-side cache for versioned assets (e.g. form_v2.png, template.png).
+    // welcome_screen.png is served with `unoptimized` so it bypasses this cache entirely.
     minimumCacheTTL: 31536000,
   },
   async headers() {
@@ -41,13 +36,20 @@ const nextConfig: NextConfig = {
         headers: staticSecurityHeaders,
       },
       {
-        // Static image assets — 7-day browser/CDN cache with background
-        // revalidation. Versioned filenames (e.g. _v3.png) bust the cache
-        // on update; `immutable` is intentionally omitted so Cloudflare
-        // revalidates after a same-named file is replaced.
-        // `Vary: Accept` tells Cloudflare to store AVIF and WebP as
-        // separate cache entries (Next.js serves different formats based on
-        // the browser's Accept header).
+        // welcome_screen.png is a mutable file (updated without renaming).
+        // no-cache forces every browser and Cloudflare CDN request to
+        // revalidate with the origin server using ETag/Last-Modified.
+        // If the file is unchanged → 304 Not Modified (instant, no re-download).
+        // If the file changed → 200 with the new content (immediate on deploy).
+        source: "/assets/welcome_screen.png",
+        headers: [
+          { key: "Cache-Control", value: "no-cache" },
+        ],
+      },
+      {
+        // All other static assets — 7-day CDN cache. Versioned filenames
+        // (form_v2.png, template.png, etc.) bust the cache on update.
+        // Vary: Accept ensures Cloudflare stores AVIF and WebP separately.
         source: "/assets/:path*",
         headers: [
           {
