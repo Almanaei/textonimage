@@ -12,6 +12,7 @@ function BahrainEmblem({ className }: { className?: string }) {
       alt="Bahrain"
       width={12}
       height={12}
+      sizes="12px"
       className={className}
     />
   );
@@ -170,6 +171,7 @@ export default function CertificateShell() {
             sizes="(max-width: 384px) 100vw, 384px"
             priority
             alt=""
+            unoptimized
           />
         </div>
         {/*
@@ -218,6 +220,11 @@ export default function CertificateShell() {
   if (screen === "form") {
     return (
       <div className="relative w-full max-w-sm mx-auto">
+        {/*
+          unoptimized: serves the PNG directly — same strategy as welcome_screen.png.
+          Combined with the no-store header in next.config.ts, any update to
+          form.png is live for every user immediately after deploy.
+        */}
         <Image
           src="/assets/form.png"
           alt="نموذج الشهادة"
@@ -227,6 +234,7 @@ export default function CertificateShell() {
           style={{ width: "100%", height: "auto", display: "block" }}
           className="rounded-2xl"
           priority
+          unoptimized
         />
 
         {/* Powered by Proud */}
@@ -343,6 +351,7 @@ export default function CertificateShell() {
           alt="شهادتك"
           width={1015}
           height={1801}
+          sizes="(max-width: 384px) 100vw, 384px"
           style={{ width: "100%", height: "auto", display: "block" }}
           unoptimized
           priority

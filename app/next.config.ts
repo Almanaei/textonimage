@@ -51,15 +51,18 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // welcome_screen.png is a mutable file (replaced in-place on every design update).
-        // no-store: never cache — always fetch from origin.
-        // This rule MUST appear AFTER /assets/:path* so it overrides Cache-Control.
-        // Combined with `unoptimized` on the <Image> component, changes are live
-        // for all users immediately after deploy with zero manual cache clearing.
+        // welcome_screen.png and form.png are mutable files — replaced in-place
+        // on design updates without renaming. Both rules MUST appear AFTER the
+        // /assets/:path* rule above so they override Cache-Control for those paths.
+        // no-store: never cache — always fetch from origin on every request.
+        // Combined with `unoptimized` on the <Image> component, any update is live
+        // for all users immediately after deploy with zero CDN purging required.
         source: "/assets/welcome_screen.png",
-        headers: [
-          { key: "Cache-Control", value: "no-store" },
-        ],
+        headers: [{ key: "Cache-Control", value: "no-store" }],
+      },
+      {
+        source: "/assets/form.png",
+        headers: [{ key: "Cache-Control", value: "no-store" }],
       },
       {
         // Next.js image optimization endpoint — same Vary requirement.
