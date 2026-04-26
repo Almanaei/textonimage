@@ -164,13 +164,15 @@ export default function CertificateShell() {
   // ── Screen 1: Welcome ───────────────────────────────────────────────────────
   if (screen === "welcome") {
     return (
-      <div className="relative w-full max-w-sm mx-auto" style={{ aspectRatio: "1015/1801" }}>
+      <div className="relative w-full max-w-sm mx-auto">
         <Image
           src="/assets/welcome_screen.png"
           alt="مرحباً"
-          fill
+          width={1015}
+          height={1801}
           sizes="(max-width: 384px) 100vw, 384px"
-          className="object-cover rounded-2xl"
+          style={{ width: "100%", height: "auto", display: "block" }}
+          className="rounded-2xl"
           priority
         />
         {/* Start button — pinned to bottom of image */}
@@ -199,13 +201,15 @@ export default function CertificateShell() {
   // ── Screen 2: Form ──────────────────────────────────────────────────────────
   if (screen === "form") {
     return (
-      <div className="relative w-full max-w-sm mx-auto" style={{ aspectRatio: "1015/1801" }}>
+      <div className="relative w-full max-w-sm mx-auto">
         <Image
           src="/assets/form.png"
           alt="نموذج الشهادة"
-          fill
+          width={1015}
+          height={1801}
           sizes="(max-width: 384px) 100vw, 384px"
-          className="object-cover rounded-2xl"
+          style={{ width: "100%", height: "auto", display: "block" }}
+          className="rounded-2xl"
           priority
         />
 
