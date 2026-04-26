@@ -12,11 +12,11 @@
  *      is not visible in the _same_ request's `req.cookies`, the session ID is
  *      also forwarded as `x-session-id` in the rewritten request headers.
  *      Route handlers call `getSessionId(req)` which checks this header first.
- *   4. Admin route guard: protect /admin/* routes with the admin session cookie.
- *      - /admin/login is always allowed through (no auth check).
- *      - /api/admin/* is always allowed through (auth handled in route handlers).
- *      - All other /admin/* routes require a valid admin_session cookie;
- *        unauthenticated requests are redirected to /admin/login.
+ *   4. Admin route guard: protect /f30/* routes with the admin session cookie.
+ *      - /f30/login is always allowed through (no auth check).
+ *      - /api/f30/* is always allowed through (auth handled in route handlers).
+ *      - All other /f30/* routes require a valid admin_session cookie;
+ *        unauthenticated requests are redirected to /f30/login.
  *
  * Runs in the Edge Runtime — must not import Node.js-only packages (e.g. pg).
  * Database writes (upsertSession) are called fire-and-forget from route handlers.
@@ -73,21 +73,21 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
   const { pathname } = req.nextUrl;
 
   // ── Admin route guard ──────────────────────────────────────────────────────
-  if (pathname.startsWith("/admin")) {
-    // /admin/login — always allow through so the login form is accessible.
-    // /api/admin/* — pass through; each route handler validates auth itself.
-    const isLoginPage = pathname === "/admin/login" || pathname.startsWith("/admin/login/");
-    const isAdminApi = pathname.startsWith("/api/admin/");
+  if (pathname.startsWith("/f30")) {
+    // /f30/login — always allow through so the login form is accessible.
+    // /api/f30/* — pass through; each route handler validates auth itself.
+    const isLoginPage = pathname === "/f30/login" || pathname.startsWith("/f30/login/");
+    const isAdminApi = pathname.startsWith("/api/f30/");
 
     if (!isLoginPage && !isAdminApi) {
-      // All other /admin/* routes require a valid session cookie.
+      // All other /f30/* routes require a valid session cookie.
       const sessionCookie = req.cookies.get(ADMIN_SESSION_COOKIE)?.value;
       const session = await verifyAdminSession(sessionCookie);
 
       if (!session) {
         // Redirect unauthenticated requests to the login page.
         const loginUrl = req.nextUrl.clone();
-        loginUrl.pathname = "/admin/login";
+        loginUrl.pathname = "/f30/login";
         return NextResponse.redirect(loginUrl);
       }
     }

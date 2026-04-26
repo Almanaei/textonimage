@@ -35,7 +35,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (!checkRateLimit(ip)) {
     logAdminEvent("warn", {
       event: "admin_login_rate_limited",
-      route: "/api/admin/auth/login",
+      route: "/api/f30/auth/login",
       status: 429,
     });
     return NextResponse.json(
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch (err) {
     logAdminEvent("error", {
       event: "admin_login_error",
-      route: "/api/admin/auth/login",
+      route: "/api/f30/auth/login",
       status: 500,
       reason: err instanceof Error ? err.message : "unknown",
     });
@@ -86,7 +86,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (!result.ok) {
     logAdminEvent("warn", {
       event: "admin_login_failed",
-      route: "/api/admin/auth/login",
+      route: "/api/f30/auth/login",
       status: 401,
     });
     return NextResponse.json(
@@ -103,8 +103,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   });
 
   logAdminEvent("info", {
-    event: "admin_login_success",
-    route: "/api/admin/auth/login",
+      event: "admin_login_success",
+      route: "/api/f30/auth/login",
     role: result.role,
     status: 200,
   });

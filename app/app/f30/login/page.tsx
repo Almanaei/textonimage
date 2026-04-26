@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/auth/login", {
+      const res = await fetch("/api/f30/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
@@ -43,7 +43,7 @@ export default function AdminLoginPage() {
       const data = (await res.json()) as { success: boolean; message?: string; field?: string | null };
 
       if (data.success) {
-        router.push("/admin");
+        router.push("/f30");
         return;
       }
 

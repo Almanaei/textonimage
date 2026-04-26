@@ -13,7 +13,7 @@ export default async function AdminPage() {
   const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
   const session = await verifyAdminSession(token);
   if (!session) {
-    redirect("/admin/login");
+    redirect("/f30/login");
   }
 
   return <AdminDashboardApp />;

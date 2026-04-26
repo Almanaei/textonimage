@@ -52,7 +52,7 @@ async function requestAdminJson<T>(endpoint: string): Promise<T> {
 
 export function fetchAdminOverview(filters: AdminDateFilter): Promise<AdminOverview> {
   return requestAdminJson<AdminOverview>(
-    `/api/admin/stats/overview${buildQuery({
+    `/api/f30/stats/overview${buildQuery({
       startDate: filters.startDate,
       endDate: filters.endDate,
     })}`,
@@ -69,7 +69,7 @@ export function fetchAdminGenerations(
   },
 ): Promise<AdminGenerationPage> {
   return requestAdminJson<AdminGenerationPage>(
-    `/api/admin/stats/generations${buildQuery({
+    `/api/f30/stats/generations${buildQuery({
       startDate: params.startDate,
       endDate: params.endDate,
       page: params.page,
@@ -89,7 +89,7 @@ export function fetchAdminUsers(
   },
 ): Promise<AdminUsersSummary> {
   return requestAdminJson<AdminUsersSummary>(
-    `/api/admin/stats/users${buildQuery({
+    `/api/f30/stats/users${buildQuery({
       startDate: params.startDate,
       endDate: params.endDate,
       page: params.page,
@@ -108,7 +108,7 @@ export function fetchAdminSessions(
   },
 ): Promise<AdminSessionsPage> {
   return requestAdminJson<AdminSessionsPage>(
-    `/api/admin/stats/sessions${buildQuery({
+    `/api/f30/stats/sessions${buildQuery({
       startDate: params.startDate,
       endDate: params.endDate,
       page: params.page,
@@ -121,7 +121,7 @@ export function fetchAdminSessions(
 
 export function fetchAdminReport(filters: AdminDateFilter): Promise<AdminReportPayload> {
   return requestAdminJson<AdminReportPayload>(
-    `/api/admin/reports${buildQuery({
+    `/api/f30/reports${buildQuery({
       startDate: filters.startDate,
       endDate: filters.endDate,
       includeTrends: "true",
@@ -136,7 +136,7 @@ export async function exportAdminReport(input: {
   page: number;
   pageSize: number;
 }): Promise<{ blob: Blob; filename: string }> {
-  const response = await fetch("/api/admin/reports/export", {
+  const response = await fetch("/api/f30/reports/export", {
     method: "POST",
     credentials: "same-origin",
     headers: {

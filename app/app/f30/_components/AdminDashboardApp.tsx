@@ -235,7 +235,7 @@ export default function AdminDashboardApp() {
       } catch (error) {
         if (error instanceof AdminApiError && (error.status === 401 || error.status === 403)) {
           // Session expired or invalid — redirect to login.
-          router.push("/admin/login");
+          router.push("/f30/login");
           return;
         }
 
@@ -267,7 +267,7 @@ export default function AdminDashboardApp() {
 
   async function logout() {
     try {
-      await fetch("/api/admin/auth/logout", {
+      await fetch("/api/f30/auth/logout", {
         method: "POST",
         credentials: "same-origin",
       });
@@ -275,7 +275,7 @@ export default function AdminDashboardApp() {
       // Best-effort — redirect to login regardless.
     }
     clearDashboardData();
-    router.push("/admin/login");
+    router.push("/f30/login");
   }
 
   function applyFilters() {

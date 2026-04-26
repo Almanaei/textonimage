@@ -16,8 +16,8 @@ const NO_STORE = { "Cache-Control": "no-store" };
 
 export async function POST(): Promise<NextResponse> {
   logAdminEvent("info", {
-    event: "admin_logout",
-    route: "/api/admin/auth/logout",
+      event: "admin_logout",
+      route: "/api/f30/auth/logout",
     status: 200,
   });
 
