@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "شهادة الولاء",
-  description: "أنشئ شهادة الولاء الخاصة بك",
+  title: "شكر الدفاع المدني",
+  description: "أنشئ شهادة شكرك لرجال الدفاع المدني البحريني",
 };
 
 export const viewport: Viewport = {
