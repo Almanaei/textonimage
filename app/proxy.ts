@@ -49,11 +49,15 @@ function buildCsp(): string {
   const scriptSrc = [
     "'self'",
     "'unsafe-inline'",
+    // Cloudflare Web Analytics beacon injected by Cloudflare's CDN layer.
+    "https://static.cloudflareinsights.com",
     ...(isDev ? ["'unsafe-eval'"] : []),
   ];
 
   const connectSrc = [
     "'self'",
+    // Cloudflare Web Analytics — beacon POST endpoint.
+    "https://cloudflareinsights.com",
     // Allow HMR WebSocket connections in development.
     ...(isDev ? ["ws:", "wss:"] : []),
   ];
