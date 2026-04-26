@@ -164,7 +164,7 @@ export default function CertificateShell() {
         */}
         <div style={{ display: "none" }} aria-hidden="true">
           <Image
-            src="/assets/form.png"
+            src={`/assets/form.png?v=${process.env.NEXT_PUBLIC_DEPLOY_ID}`}
             width={1015}
             height={1801}
             sizes="(max-width: 384px) 100vw, 384px"
@@ -212,7 +212,7 @@ export default function CertificateShell() {
     return (
       <div className="relative w-full max-w-sm mx-auto">
         <Image
-          src="/assets/form.png"
+          src={`/assets/form.png?v=${process.env.NEXT_PUBLIC_DEPLOY_ID}`}
           alt="نموذج الشهادة"
           width={1015}
           height={1801}
@@ -231,12 +231,12 @@ export default function CertificateShell() {
           <span className="text-[10px] text-white/35 group-hover:text-white/65 transition tracking-wide underline underline-offset-2 decoration-white/20 group-hover:decoration-white/50">Powered by Proud</span>
           <BahrainEmblem className="opacity-35 group-hover:opacity-65 transition" />
         </a>
-        {/* Form overlaid below the logo — logo occupies the top ~38% of the image */}
+        {/* Form overlaid in the dark area below logo + "أنتم أبطالنا" text (~65% from top) */}
         <form
           onSubmit={handleSubmit}
           noValidate
           dir="rtl"
-          className="absolute inset-x-[8%] top-[42%] bottom-[10%] flex flex-col justify-center gap-[4%]"
+          className="absolute inset-x-[8%] top-[65%] bottom-[5%] flex flex-col justify-center gap-[4%]"
         >
           {/* Name field */}
           <div className="flex flex-col gap-1">

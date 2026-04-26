@@ -53,11 +53,16 @@ function putCache(key: string, buf: Buffer): void {
 
 /**
  * Sanitise and render a certificate for the given Arabic name.
- * Results are cached in-process so repeated requests for the same name
- * are served from memory without re-rendering.
+ * Results are cached in-process so repeated requests for the same name are
+ * served from memory without re-rendering.  Concurrent requests for the same
+ * name share a single in-flight promise rather than triggering duplicate
+ * renders; the in-flight entry is removed on completion so failed renders
+ * never block future retries.
  * @throws {NameTooLongError} when the name cannot fit in the layout zone
  */
-export async function generateCertificate(
+const _inFlightPromises = new Map<string, Promise<Buffer>>();
+
+export function generateCertificate(
   input: GenerateInput,
 ): Promise<Buffer> {
   const { name } = sanitize(input);
@@ -65,14 +70,23 @@ export async function generateCertificate(
   const displayText = name;
 
   const cached = getCached(displayText);
-  if (cached) return cached;
+  if (cached) return Promise.resolve(cached);
 
-  const layout = computeLayout(displayText);
-  const textLayer = buildCanvasTextLayer(layout);
-  const pngBuffer = await compositeImage(textLayer);
+  const existing = _inFlightPromises.get(displayText);
+  if (existing) return existing;
 
-  putCache(displayText, pngBuffer);
-  return pngBuffer;
+  const promise = (async () => {
+    const layout = computeLayout(displayText);
+    const textLayer = buildCanvasTextLayer(layout);
+    const pngBuffer = await compositeImage(textLayer);
+    putCache(displayText, pngBuffer);
+    return pngBuffer;
+  })();
+
+  _inFlightPromises.set(displayText, promise);
+  promise.finally(() => _inFlightPromises.delete(displayText));
+
+  return promise;
 }
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────

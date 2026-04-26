@@ -14,14 +14,14 @@ export const GenerateSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(2, { message: "الاسم يجب أن يكون حرفين على الأقل" })
-    .max(60, { message: "الاسم طويل جداً (الحد الأقصى 60 حرفاً)" })
-    .regex(ARABIC_NAME_PATTERN, { message: "يرجى إدخال الاسم بالعربية فقط" }),
+    .min(2, { error: "الاسم يجب أن يكون حرفين على الأقل" })
+    .max(60, { error: "الاسم طويل جداً (الحد الأقصى 60 حرفاً)" })
+    .regex(ARABIC_NAME_PATTERN, { error: "يرجى إدخال الاسم بالعربية فقط" }),
   email: z
     .string()
     .trim()
     .toLowerCase()
-    .email({ message: "صيغة البريد الإلكتروني غير صحيحة" }),
+    .email({ error: "صيغة البريد الإلكتروني غير صحيحة" }),
 });
 
 export type GenerateInput = z.infer<typeof GenerateSchema>;
@@ -43,7 +43,7 @@ const EVENT_TYPES = [
 export const TrackEventSchema = z.object({
   /** Must be one of the known event types. */
   eventType: z.enum(EVENT_TYPES, {
-    message: "نوع الحدث غير معروف",
+    error: "نوع الحدث غير معروف",
   }),
   /** Optional free-form metadata. Must not contain PII. */
   metadata: z.record(z.string(), z.unknown()).optional(),

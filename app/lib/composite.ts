@@ -68,6 +68,11 @@ function getPreparedTemplate(): Promise<PreparedTemplate> {
     _buildPromise = buildPreparedTemplate().then((t) => {
       _prepared = t;
       return t;
+    }).catch((err) => {
+      // Clear the promise so the next call retries instead of re-awaiting the
+      // same rejected promise forever (transient failures are recoverable).
+      _buildPromise = null;
+      throw err;
     });
   }
   return _buildPromise;
@@ -128,6 +133,11 @@ function getPreparedQR(): Promise<PreparedQR> {
     _qrBuildPromise = buildPreparedQR().then((q) => {
       _preparedQR = q;
       return q;
+    }).catch((err) => {
+      // Clear the promise so the next call retries instead of re-awaiting the
+      // same rejected promise forever (transient failures are recoverable).
+      _qrBuildPromise = null;
+      throw err;
     });
   }
   return _qrBuildPromise;
