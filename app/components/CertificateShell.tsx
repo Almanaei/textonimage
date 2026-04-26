@@ -20,7 +20,7 @@ function BahrainEmblem({ className }: { className?: string }) {
 type Screen = "welcome" | "form" | "result";
 type ShareStatus = "idle" | "copied";
 
-const APP_URL = typeof window !== "undefined" ? window.location.origin : "https://thanksbahrainccd.com";
+const APP_URL = typeof window !== "undefined" ? window.location.origin : "https://thanksbahraincd.com";
 const WHATSAPP_TEXT = encodeURIComponent(
   `أنشئ شهادة شكرك لرجال الدفاع المدني البحريني من هنا: ${APP_URL}`,
 );
