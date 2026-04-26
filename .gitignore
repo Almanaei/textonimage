@@ -18,7 +18,7 @@ backend_setup.json
 backend-setup.md
 backend-setup.json
 
-# Root-level test/screenshot images
-*.png
-*.jpg
-*.jpeg
+# Root-level test/screenshot images only (not subdirectory assets)
+/*.png
+/*.jpg
+/*.jpeg

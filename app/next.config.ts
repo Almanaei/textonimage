@@ -37,8 +37,7 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [384, 640, 768, 828, 1080, 1200],
     imageSizes: [16, 20, 48, 64, 96, 128, 384],
-    // 1-year server-side cache for versioned assets (e.g. form_v2.png, template.png).
-    // welcome_screen.png is served with `unoptimized` so it bypasses this cache entirely.
+    // 1-year server-side cache for Next.js-optimised variants of local assets.
     minimumCacheTTL: 31536000,
     // Allow all local images, and explicitly permit ?v= cache-busting query
     // strings on /assets/* paths (required since Next.js blocks query strings
