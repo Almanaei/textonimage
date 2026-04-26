@@ -1,3 +1,10 @@
+# Railway Hobby+ — set in the dashboard (not in this file):
+# - Web service: ~1–2 GiB RAM, 1–2 vCPU is a good fit for Next + Sharp + canvas.
+# - Keep replicas = 1 while certificate LRU cache is in-process only; add Redis
+#   (or similar) before scaling replicas or cache will be cold per instance.
+# - Postgres: leave on Railway plugin; $5/mo plan credit often covers app + DB.
+# - Set a usage / spend cap under Billing to avoid surprise overages.
+#
 [build]
 builder = "dockerfile"
 dockerfilePath = "Dockerfile"

@@ -67,5 +67,10 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
+# Libuv thread pool (fs/crypto) — Sharp benefits from a slightly larger pool on
+# Hobby+ where the service can use 1–2+ vCPU. Default Node value is 4. Override
+# in Railway "Variables" if you scale vCPU.
+ENV UV_THREADPOOL_SIZE=8
+
 # start.sh runs migrations first, then exec's into server.js
 CMD ["sh", "start.sh"]
