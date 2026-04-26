@@ -394,13 +394,6 @@ export default function CertificateShell() {
         </button>
       </div>
 
-      {/* Make another */}
-      <button
-        onClick={() => { setScreen("welcome"); setImageUrl(""); setImageBlob(null); }}
-        className="text-sm text-white/50 hover:text-white/80 transition font-arabic"
-      >
-        إنشاء شهادة أخرى
-      </button>
     </div>
   );
 }
