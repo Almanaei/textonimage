@@ -17,6 +17,8 @@ interface AdminLogPayload {
   format?: string;
   rows?: number;
   reason?: string;
+  deletedSessions?: number;
+  countries?: number;
 }
 
 export function logAdminEvent(level: LogLevel, payload: AdminLogPayload): void {
