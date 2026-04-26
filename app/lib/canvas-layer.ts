@@ -44,6 +44,20 @@ function ensureFontRegistered(): void {
   }
 }
 
+// ─── Canvas singleton ─────────────────────────────────────────────────────────
+// Creating a 2400×4257 Skia surface allocates ~40 MB of RGBA memory.
+// Reusing a single canvas per process eliminates that allocation on every
+// cold-cache request. Safety: buildCanvasTextLayer is purely synchronous;
+// Node's single-threaded event loop guarantees that no concurrent task can
+// interleave between ctx.clearRect() and ctx.getImageData().
+let _sharedCanvas: ReturnType<typeof createCanvas> | null = null;
+function getSharedCanvas(): ReturnType<typeof createCanvas> {
+  if (!_sharedCanvas) {
+    _sharedCanvas = createCanvas(OUTPUT_WIDTH, OUTPUT_HEIGHT);
+  }
+  return _sharedCanvas;
+}
+
 // ─── Output type ──────────────────────────────────────────────────────────────
 
 /** Raw RGBA pixel data — avoids PNG encode/decode round-trip with sharp. */
@@ -66,7 +80,7 @@ export interface RawTextLayer {
 export function buildCanvasTextLayer(layout: TextLayout): RawTextLayer {
   ensureFontRegistered();
 
-  const canvas = createCanvas(OUTPUT_WIDTH, OUTPUT_HEIGHT);
+  const canvas = getSharedCanvas();
   const ctx = canvas.getContext("2d");
 
   ctx.clearRect(0, 0, OUTPUT_WIDTH, OUTPUT_HEIGHT);
