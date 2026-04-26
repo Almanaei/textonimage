@@ -37,15 +37,9 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [384, 640, 768, 828, 1080, 1200],
     imageSizes: [16, 20, 48, 64, 96, 128, 384],
-    // 1-year server-side cache for Next.js-optimised variants of local assets.
+    // 1-year server-side cache for versioned assets (form.png, template.png).
+    // welcome_screen.png is served with `unoptimized` so it bypasses this cache.
     minimumCacheTTL: 31536000,
-    // Allow all local images, and explicitly permit ?v= cache-busting query
-    // strings on /assets/* paths (required since Next.js blocks query strings
-    // on local images unless localPatterns is configured).
-    localPatterns: [
-      { pathname: "/**", search: "" },
-      { pathname: "/assets/**", search: "**" },
-    ],
   },
   async headers() {
     return [
@@ -54,9 +48,8 @@ const nextConfig: NextConfig = {
         headers: staticSecurityHeaders,
       },
       {
-        // All other static assets — 7-day CDN cache. Versioned filenames
-        // (form_v2.png, template.png, etc.) bust the cache on update.
-        // Vary: Accept ensures Cloudflare stores AVIF and WebP separately.
+        // All static assets — 7-day CDN cache with background revalidation.
+        // Vary: Accept tells Cloudflare to store AVIF and WebP as separate entries.
         source: "/assets/:path*",
         headers: [
           {
@@ -67,6 +60,17 @@ const nextConfig: NextConfig = {
             key: "Vary",
             value: "Accept",
           },
+        ],
+      },
+      {
+        // welcome_screen.png is a mutable file (replaced in-place on every design update).
+        // no-store: never cache — always fetch from origin.
+        // This rule MUST appear AFTER /assets/:path* so it overrides Cache-Control.
+        // Combined with `unoptimized` on the <Image> component, changes are live
+        // for all users immediately after deploy with zero manual cache clearing.
+        source: "/assets/welcome_screen.png",
+        headers: [
+          { key: "Cache-Control", value: "no-store" },
         ],
       },
       {

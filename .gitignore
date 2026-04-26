@@ -22,3 +22,11 @@ backend-setup.json
 /*.png
 /*.jpg
 /*.jpeg
+
+# Unused / versioned asset files — keep off git to reduce Docker image size
+app/public/assets/welcome_screen_v*.png
+app/public/assets/welcome_screen_original.png
+app/public/assets/form_old.png
+app/public/assets/form_v*.png
+app/public/assets/template_qr_v*.png
+app/public/assets/gdcd_v*.png

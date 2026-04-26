@@ -164,7 +164,7 @@ export default function CertificateShell() {
         */}
         <div style={{ display: "none" }} aria-hidden="true">
           <Image
-            src={`/assets/form.png?v=${process.env.NEXT_PUBLIC_DEPLOY_ID}`}
+            src="/assets/form.png"
             width={1015}
             height={1801}
             sizes="(max-width: 384px) 100vw, 384px"
@@ -172,8 +172,14 @@ export default function CertificateShell() {
             alt=""
           />
         </div>
+        {/*
+          unoptimized: serves the PNG directly, bypassing Next.js image optimizer
+          cache. Combined with the no-store header on this path in next.config.ts,
+          any update to welcome_screen.png is live for every user immediately after
+          deploy — no CDN purge or cache clearing required.
+        */}
         <Image
-          src={`/assets/welcome_screen.png?v=${process.env.NEXT_PUBLIC_DEPLOY_ID}`}
+          src="/assets/welcome_screen.png"
           alt="مرحباً"
           width={1015}
           height={1801}
@@ -181,6 +187,7 @@ export default function CertificateShell() {
           style={{ width: "100%", height: "auto", display: "block" }}
           className="rounded-2xl"
           priority
+          unoptimized
         />
 
         {/* Start button — in the dark wave area below the text (text ends ~68% from top) */}
