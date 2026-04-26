@@ -182,8 +182,8 @@ export default function CertificateShell() {
           className="rounded-2xl"
           priority
         />
-        {/* Start button — pinned to bottom of image */}
-        <div className="absolute bottom-[6%] inset-x-0 flex justify-center px-8">
+        {/* Start button — sits above the GDCD badge (~11.4% from bottom) */}
+        <div className="absolute bottom-[15%] inset-x-0 flex justify-center px-8">
           <button
             onClick={() => setScreen("form")}
             className="w-full rounded-xl bg-white/90 backdrop-blur-sm py-4 text-lg font-bold text-gray-900 shadow-lg transition active:scale-95 hover:bg-white font-arabic"
