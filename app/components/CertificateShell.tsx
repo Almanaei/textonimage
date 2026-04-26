@@ -219,7 +219,7 @@ export default function CertificateShell() {
     return (
       <div className="relative w-full max-w-sm mx-auto">
         <Image
-          src={`/assets/form.png?v=${process.env.NEXT_PUBLIC_DEPLOY_ID}`}
+          src="/assets/form.png"
           alt="نموذج الشهادة"
           width={1015}
           height={1801}

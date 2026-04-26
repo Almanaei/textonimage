@@ -17,21 +17,9 @@ const staticSecurityHeaders = [
   },
 ];
 
-// Unique per-deploy identifier used to bust CDN/browser cache for mutable
-// assets. On Railway this is the git commit SHA (injected automatically).
-// Falls back to build timestamp for local dev.
-const deployId =
-  (process.env.RAILWAY_GIT_COMMIT_SHA ?? "").slice(0, 8) ||
-  Date.now().toString(36);
-
 const nextConfig: NextConfig = {
   output: "standalone",
   serverExternalPackages: ["@napi-rs/canvas", "sharp", "pg"],
-  // Expose the deploy ID to the browser bundle so components can append
-  // ?v=<hash> to mutable asset URLs, forcing a fresh fetch on every deploy.
-  env: {
-    NEXT_PUBLIC_DEPLOY_ID: deployId,
-  },
   images: {
     // Serve AVIF first (30-50% smaller than WebP), fall back to WebP.
     formats: ["image/avif", "image/webp"],
