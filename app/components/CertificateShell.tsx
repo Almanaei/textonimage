@@ -173,7 +173,7 @@ export default function CertificateShell() {
           />
         </div>
         <Image
-          src="/assets/welcome_screen_v3.png"
+          src="/assets/welcome_screen_v4.png"
           alt="مرحباً"
           width={1015}
           height={1801}
