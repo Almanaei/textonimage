@@ -316,18 +316,16 @@ export default function CertificateShell() {
   // ── Screen 3: Result ────────────────────────────────────────────────────────
   return (
     <div className="w-full max-w-sm mx-auto flex flex-col gap-4" dir="rtl">
-      {/* Certificate preview — fill inside an aspect-ratio container so no
-          fixed pixel width is ever emitted as an HTML attribute, which would
-          cause mobile browsers to auto-zoom the page to 1015 px. */}
-      <div
-        className="relative w-full overflow-hidden rounded-2xl shadow-xl"
-        style={{ aspectRatio: "1015/1801" }}
-      >
+      {/* Certificate preview — inline width/height style overrides the HTML
+          attribute so the image always scales to the container width.
+          overflow-hidden prevents any sub-pixel rendering from overflowing. */}
+      <div className="w-full overflow-hidden rounded-2xl shadow-xl">
         <Image
           src={imageUrl}
           alt="شهادتك"
-          fill
-          className="object-contain"
+          width={1015}
+          height={1801}
+          style={{ width: "100%", height: "auto", display: "block" }}
           unoptimized
           priority
         />
