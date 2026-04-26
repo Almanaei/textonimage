@@ -183,19 +183,8 @@ export default function CertificateShell() {
           priority
         />
 
-        {/* GDCD badge — sits above the button */}
-        <div className="absolute bottom-[16%] inset-x-0 flex justify-center">
-          <Image
-            src="/assets/gdcd_v1.png"
-            alt="الدفاع المدني"
-            width={72}
-            height={72}
-            style={{ width: 72, height: 72 }}
-          />
-        </div>
-
         {/* Start button — gold-themed to match app colours */}
-        <div className="absolute bottom-[5%] inset-x-0 flex justify-center px-8">
+        <div className="absolute bottom-[6%] inset-x-0 flex justify-center px-8">
           <button
             onClick={() => setScreen("form")}
             className="w-full rounded-xl border-2 border-[#D0A040] bg-black/30 backdrop-blur-sm py-4 text-lg font-bold text-[#D0A040] shadow-lg transition active:scale-95 hover:bg-[#D0A040]/20 font-arabic"
