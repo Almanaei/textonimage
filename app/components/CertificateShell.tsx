@@ -139,8 +139,16 @@ export default function CertificateShell() {
   }
 
   function handleWhatsApp() {
-    window.open(`https://wa.me/?text=${WHATSAPP_TEXT}`, "_blank", "noopener,noreferrer");
     track("whatsapp_share_clicked");
+    // On mobile, the whatsapp:// URI scheme opens the app directly and shows
+    // the contact picker immediately — no intermediate browser redirect page.
+    // On desktop we fall back to wa.me which opens Web WhatsApp.
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.href = `whatsapp://send?text=${WHATSAPP_TEXT}`;
+    } else {
+      window.open(`https://wa.me/?text=${WHATSAPP_TEXT}`, "_blank", "noopener,noreferrer");
+    }
   }
 
   // ── Screen 1: Welcome ───────────────────────────────────────────────────────
