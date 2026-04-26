@@ -40,6 +40,13 @@ const nextConfig: NextConfig = {
     // 1-year server-side cache for versioned assets (e.g. form_v2.png, template.png).
     // welcome_screen.png is served with `unoptimized` so it bypasses this cache entirely.
     minimumCacheTTL: 31536000,
+    // Allow all local images, and explicitly permit ?v= cache-busting query
+    // strings on /assets/* paths (required since Next.js blocks query strings
+    // on local images unless localPatterns is configured).
+    localPatterns: [
+      { pathname: "/**", search: "" },
+      { pathname: "/assets/**", search: "**" },
+    ],
   },
   async headers() {
     return [
