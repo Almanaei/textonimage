@@ -37,13 +37,15 @@ const nextConfig: NextConfig = {
         headers: staticSecurityHeaders,
       },
       {
-        // Static image assets: cache for 1 year in the browser.
-        // These files never change between deployments (content-addressed by filename).
+        // Static image assets: cache for 7 days.
+        // Versioned filenames (e.g. welcome_screen_v3.png) bust the cache on
+        // update; immutable is intentionally omitted so Cloudflare/browsers
+        // can revalidate after a redeployment replaces a same-named file.
         source: "/assets/:path*",
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            value: "public, max-age=604800, stale-while-revalidate=86400",
           },
         ],
       },
