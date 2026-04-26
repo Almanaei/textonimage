@@ -173,7 +173,7 @@ export default function CertificateShell() {
           />
         </div>
         <Image
-          src="/assets/welcome_screen_v6.png"
+          src="/assets/welcome_screen_v7.png"
           alt="مرحباً"
           width={1015}
           height={1801}
@@ -183,8 +183,8 @@ export default function CertificateShell() {
           priority
         />
 
-        {/* Start button — gold-themed to match app colours */}
-        <div className="absolute bottom-[6%] inset-x-0 flex justify-center px-8">
+        {/* Start button — placed just below the text block (text ends ~68% from top) */}
+        <div className="absolute bottom-[22%] inset-x-0 flex justify-center px-8">
           <button
             onClick={() => setScreen("form")}
             className="w-full rounded-xl border-2 border-[#D0A040] bg-black/30 backdrop-blur-sm py-4 text-lg font-bold text-[#D0A040] shadow-lg transition active:scale-95 hover:bg-[#D0A040]/20 font-arabic"
