@@ -51,16 +51,6 @@ export default function CertificateShell() {
   const [emailError, setEmailError] = useState("");
   const [serverError, setServerError] = useState("");
 
-  // Preload form.png in the background while the welcome screen is visible
-  // so the transition to the form screen is instant.
-  useEffect(() => {
-    const link = document.createElement("link");
-    link.rel = "prefetch";
-    link.as = "image";
-    link.href = "/assets/form.png";
-    document.head.appendChild(link);
-    return () => { document.head.removeChild(link); };
-  }, []);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -165,6 +155,23 @@ export default function CertificateShell() {
   if (screen === "welcome") {
     return (
       <div className="relative w-full max-w-sm mx-auto">
+        {/*
+          Preload form.png while the welcome screen is visible.
+          Next.js Image with priority emits <link rel="preload" as="image">
+          in <head> with the correct optimized URL (AVIF/WebP + right size),
+          so the browser downloads it before the user taps the button.
+          display:none hides it visually; the <head> preload is independent of CSS.
+        */}
+        <div style={{ display: "none" }} aria-hidden="true">
+          <Image
+            src="/assets/form.png"
+            width={1015}
+            height={1801}
+            sizes="(max-width: 384px) 100vw, 384px"
+            priority
+            alt=""
+          />
+        </div>
         <Image
           src="/assets/welcome_screen.png"
           alt="مرحباً"
