@@ -175,6 +175,6 @@ export async function compositeImage(textLayer: RawTextLayer): Promise<Buffer> {
     // Flatten alpha before JPEG — certificate has no transparency after compositing
     // and JPEG is ~4-8× smaller than PNG for photo-based images (no alpha overhead).
     .flatten()
-    .jpeg({ quality: 88, mozjpeg: true })
+    .jpeg({ quality: 88 })
     .toBuffer();
 }
