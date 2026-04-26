@@ -333,11 +333,7 @@ export default function CertificateShell() {
       </div>
 
       {/* Glassy divider — marks the boundary between certificate and actions */}
-      <div className="relative flex items-center gap-3 px-1">
-        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/30 to-white/10" />
-        <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
-        <div className="flex-1 h-px bg-gradient-to-l from-transparent via-white/30 to-white/10" />
-      </div>
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
       {/* Download — dark glass primary action */}
       <button
