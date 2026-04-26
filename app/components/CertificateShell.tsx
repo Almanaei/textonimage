@@ -81,7 +81,7 @@ export default function CertificateShell() {
 
       if (res.ok) {
         const arrayBuffer = await res.arrayBuffer();
-        const blob = new Blob([arrayBuffer], { type: "image/webp" });
+        const blob = new Blob([arrayBuffer], { type: "image/jpeg" });
         setImageBlob(blob);
         setImageUrl((prev) => {
           if (prev) URL.revokeObjectURL(prev);
@@ -114,10 +114,10 @@ export default function CertificateShell() {
         imageBlob &&
         typeof navigator.canShare === "function" &&
         navigator.canShare({
-          files: [new File([imageBlob], "shahadah.webp", { type: "image/webp" })],
+          files: [new File([imageBlob], "shahadah.jpg", { type: "image/jpeg" })],
         })
       ) {
-        shareData.files = [new File([imageBlob], "shahadah.webp", { type: "image/webp" })];
+        shareData.files = [new File([imageBlob], "shahadah.jpg", { type: "image/jpeg" })];
       }
       try {
         await navigator.share(shareData);
@@ -351,7 +351,7 @@ export default function CertificateShell() {
           onClick={() => {
             const a = document.createElement("a");
             a.href = imageUrl;
-            a.download = "shahadah.webp";
+            a.download = "shahadah.jpg";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);

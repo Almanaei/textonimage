@@ -9,8 +9,9 @@
  *  1. Template is flatten+resized ONCE at module load into raw pixels.
  *     Every subsequent request skips PNG decode, flatten, and Lanczos3 resize.
  *  2. QR code overlay is cropped, resized, and cached the same way.
- *  3. Output uses WebP (quality 85) instead of PNG — typically 8-10× smaller
- *     for photo-based images, dramatically reducing transfer latency.
+ *  3. Output uses JPEG (quality 88, mozjpeg) instead of PNG — typically 4-8×
+ *     smaller for photo-based images, dramatically reducing transfer latency.
+ *     Alpha is flattened before encoding since the certificate is fully opaque.
  */
 
 import sharp from "sharp";
@@ -171,6 +172,9 @@ export async function compositeImage(textLayer: RawTextLayer): Promise<Buffer> {
         blend: "over",
       },
     ])
-    .webp({ quality: 85 })
+    // Flatten alpha before JPEG — certificate has no transparency after compositing
+    // and JPEG is ~4-8× smaller than PNG for photo-based images (no alpha overhead).
+    .flatten()
+    .jpeg({ quality: 88, mozjpeg: true })
     .toBuffer();
 }

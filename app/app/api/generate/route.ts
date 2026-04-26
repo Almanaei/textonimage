@@ -111,8 +111,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return new NextResponse(new Uint8Array(pngBuffer), {
       status: 200,
       headers: {
-        "Content-Type": "image/webp",
-        "Content-Disposition": 'attachment; filename="shahadah.webp"',
+        "Content-Type": "image/jpeg",
+        "Content-Disposition": 'attachment; filename="shahadah.jpg"',
         "Cache-Control": "no-store",
       },
     });
