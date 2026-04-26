@@ -75,6 +75,48 @@ export async function generateCertificate(
   return pngBuffer;
 }
 
+// ─── Cache pre-warm ───────────────────────────────────────────────────────────
+
+/**
+ * Most common Arabic first names in Bahrain, ordered roughly by frequency.
+ * Pre-generating these at startup means the first real user for each name
+ * gets a cache hit instead of a ~1 second cold generation.
+ */
+const PREWARM_NAMES: string[] = [
+  // Male — common Bahraini names
+  "محمد", "أحمد", "علي", "عبدالله", "خالد", "يوسف", "عمر", "حسن",
+  "حسين", "إبراهيم", "ناصر", "سلمان", "جاسم", "فهد", "بدر", "مهدي",
+  "عبدالرحمن", "فيصل", "ماجد", "صالح", "سامي", "طارق", "عادل", "وليد",
+  // Female — common Bahraini names
+  "فاطمة", "مريم", "نورة", "سارة", "هند", "زينب", "خديجة", "أسماء",
+  "ريم", "رنا", "شيخة", "ميساء", "عائشة", "هيفاء", "أمل", "دانة",
+];
+
+async function prewarmCache(): Promise<void> {
+  const t0 = Date.now();
+  let warmed = 0;
+  for (const name of PREWARM_NAMES) {
+    try {
+      if (!getCached(name)) {
+        await generateCertificate({ name, email: "prewarm@noop.local" });
+        warmed++;
+      }
+    } catch {
+      // Best-effort — a failure on one name must not stop the rest
+    }
+  }
+  console.info("[generate-image] pre-warm complete", {
+    warmed,
+    total: PREWARM_NAMES.length,
+    ms: Date.now() - t0,
+  });
+}
+
+// Start pre-warming 4 seconds after module load so the server finishes
+// initialising other modules (template/QR warm-up, DB connections, etc.)
+// first. Runs entirely in the background; real requests are never blocked.
+setTimeout(() => void prewarmCache(), 4000);
+
 // ─── Internal helpers ─────────────────────────────────────────────────────────
 
 function sanitize(input: GenerateInput): GenerateInput {
