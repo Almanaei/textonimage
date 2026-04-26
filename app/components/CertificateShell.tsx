@@ -4,14 +4,14 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ARABIC_NAME_PATTERN, EMAIL_PATTERN, NAME_MAX_LENGTH } from "@/lib/client-constants";
 
-/** Bahrain emblem — served as optimized AVIF/WebP at 20×20 px by Next.js. */
+/** Bahrain emblem — served as optimized AVIF/WebP at 12×12 px by Next.js. */
 function BahrainEmblem({ className }: { className?: string }) {
   return (
     <Image
       src="/assets/Bahrain.png"
       alt="Bahrain"
-      width={20}
-      height={20}
+      width={12}
+      height={12}
       className={className}
     />
   );
