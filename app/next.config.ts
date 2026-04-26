@@ -36,17 +36,6 @@ const nextConfig: NextConfig = {
         headers: staticSecurityHeaders,
       },
       {
-        // welcome_screen.png is a mutable file (updated without renaming).
-        // no-cache forces every browser and Cloudflare CDN request to
-        // revalidate with the origin server using ETag/Last-Modified.
-        // If the file is unchanged → 304 Not Modified (instant, no re-download).
-        // If the file changed → 200 with the new content (immediate on deploy).
-        source: "/assets/welcome_screen.png",
-        headers: [
-          { key: "Cache-Control", value: "no-cache" },
-        ],
-      },
-      {
         // All other static assets — 7-day CDN cache. Versioned filenames
         // (form_v2.png, template.png, etc.) bust the cache on update.
         // Vary: Accept ensures Cloudflare stores AVIF and WebP separately.
@@ -60,6 +49,17 @@ const nextConfig: NextConfig = {
             key: "Vary",
             value: "Accept",
           },
+        ],
+      },
+      {
+        // welcome_screen.png is a mutable file (replaced without renaming).
+        // This rule MUST come after the /assets/:path* rule above so it wins
+        // for duplicate Cache-Control keys (Next.js applies last match).
+        // no-store: do not cache at all — always fetch from origin.
+        // This guarantees Cloudflare and browsers never serve a stale copy.
+        source: "/assets/welcome_screen.png",
+        headers: [
+          { key: "Cache-Control", value: "no-store" },
         ],
       },
       {
