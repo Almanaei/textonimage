@@ -189,7 +189,7 @@ export default function CertificateShell() {
             className="w-full rounded-xl bg-white/90 backdrop-blur-sm py-4 text-lg font-bold text-gray-900 shadow-lg transition active:scale-95 hover:bg-white font-arabic"
             dir="rtl"
           >
-            وصّل شكرك الآن
+            أرسل شكرك الآن
           </button>
         </div>
         {/* Powered by Proud */}
@@ -239,7 +239,7 @@ export default function CertificateShell() {
           {/* Name field */}
           <div className="flex flex-col gap-1">
             <label htmlFor="name-input" className="text-xs font-semibold text-white/90 drop-shadow font-arabic">
-              الاسم بالعربي
+              الاسم
             </label>
             <input
               id="name-input"
