@@ -11,7 +11,7 @@
  */
 
 import path from "path";
-import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
+import { createCanvas, GlobalFonts, Canvas } from "@napi-rs/canvas";
 import type { TextLayout } from "./layout";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -50,8 +50,8 @@ function ensureFontRegistered(): void {
 // cold-cache request. Safety: buildCanvasTextLayer is purely synchronous;
 // Node's single-threaded event loop guarantees that no concurrent task can
 // interleave between ctx.clearRect() and ctx.getImageData().
-let _sharedCanvas: ReturnType<typeof createCanvas> | null = null;
-function getSharedCanvas(): ReturnType<typeof createCanvas> {
+let _sharedCanvas: Canvas | null = null;
+function getSharedCanvas(): Canvas {
   if (!_sharedCanvas) {
     _sharedCanvas = createCanvas(OUTPUT_WIDTH, OUTPUT_HEIGHT);
   }
