@@ -316,7 +316,7 @@ export default function CertificateShell() {
                 جارِ الإنشاء…
               </>
             ) : (
-              "أنشأ الصورة"
+              "إرسال"
             )}
           </button>
         </form>

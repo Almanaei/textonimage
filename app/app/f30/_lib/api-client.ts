@@ -2,6 +2,7 @@ import {
   AdminDateFilter,
   AdminExportFormat,
   AdminGenerationPage,
+  AdminLocationSummary,
   AdminOverview,
   AdminReportPayload,
   AdminReportType,
@@ -117,6 +118,30 @@ export function fetchAdminSessions(
       sortBy: params.sortBy,
     })}`,
   );
+}
+
+export function fetchAdminLocations(filters: AdminDateFilter): Promise<AdminLocationSummary> {
+  return requestAdminJson<AdminLocationSummary>(
+    `/api/f30/stats/locations${buildQuery({
+      startDate: filters.startDate,
+      endDate: filters.endDate,
+    })}`,
+  );
+}
+
+export async function resetAdminData(): Promise<{ deletedSessions: number }> {
+  const response = await fetch("/api/f30/data/reset", {
+    method: "DELETE",
+    credentials: "same-origin",
+  });
+  const payload = (await response.json().catch(() => null)) as ApiEnvelope<{ deletedSessions: number }> | null;
+  if (!response.ok) {
+    throw new AdminApiError(payload?.message ?? "Reset failed.", response.status);
+  }
+  if (!payload?.success || !payload.data) {
+    throw new AdminApiError(payload?.message ?? "Unexpected response.", response.status);
+  }
+  return payload.data;
 }
 
 export function fetchAdminReport(filters: AdminDateFilter): Promise<AdminReportPayload> {

@@ -25,6 +25,7 @@ import { getSessionId } from "@/lib/session";
 import { recordEvent, recordGenerationLog, upsertSession } from "@/lib/events";
 import { readBodyWithLimit, EMPTY_BODY } from "@/lib/read-body";
 import { getClientIp } from "@/lib/ip";
+import { getGeoLocation } from "@/lib/geo";
 
 const BODY_SIZE_LIMIT = 1024; // 1 KB
 
@@ -93,6 +94,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
+  // ── Geo-location (Cloudflare headers — best-effort, no-op without CF) ───────
+  const geo = getGeoLocation(req);
+
   // ── Generate certificate ────────────────────────────────────────────────────
   void recordEvent(sessionId, "generation_requested");
   const t0 = Date.now();
@@ -102,7 +106,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     console.info("[/api/generate] success", { event: "generation_success", latencyMs });
     void recordEvent(sessionId, "generation_success");
-    void recordGenerationLog(sessionId, true, latencyMs, undefined, parsed.data.name, parsed.data.email);
+    void recordGenerationLog(sessionId, true, latencyMs, undefined, parsed.data.name, parsed.data.email, geo.countryCode, geo.city);
 
     return new NextResponse(new Uint8Array(pngBuffer), {
       status: 200,
@@ -120,7 +124,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         field: err.field ?? null,
       });
       void recordEvent(sessionId, "generation_error", { errorType: "validation" });
-      void recordGenerationLog(sessionId, false, latencyMs, "validation", parsed.data.name, parsed.data.email);
+      void recordGenerationLog(sessionId, false, latencyMs, "validation", parsed.data.name, parsed.data.email, geo.countryCode, geo.city);
       return NextResponse.json(
         { success: false, message: err.message, field: err.field },
         { status: 400 },
@@ -135,7 +139,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         latencyMs,
       });
       void recordEvent(sessionId, "generation_error", { errorType: "name_too_long" });
-      void recordGenerationLog(sessionId, false, latencyMs, "name_too_long", parsed.data.name, parsed.data.email);
+      void recordGenerationLog(sessionId, false, latencyMs, "name_too_long", parsed.data.name, parsed.data.email, geo.countryCode, geo.city);
       return NextResponse.json(
         { success: false, message: "الاسم طويل جداً ولا يمكن وضعه على الشهادة." },
         { status: 422 },
@@ -151,7 +155,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       latencyMs,
     });
     void recordEvent(sessionId, "generation_error", { errorType: "server" });
-    void recordGenerationLog(sessionId, false, latencyMs, "server", parsed.data.name, parsed.data.email);
+    void recordGenerationLog(sessionId, false, latencyMs, "server", parsed.data.name, parsed.data.email, geo.countryCode, geo.city);
 
     return NextResponse.json(
       { success: false, message: "حدث خطأ في الخادم. يرجى المحاولة مرة أخرى." },

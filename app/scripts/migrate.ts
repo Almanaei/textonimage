@@ -87,8 +87,10 @@ async function migrate(): Promise<void> {
       )
     `);
     // Add columns to existing tables (safe on fresh installs — no-op if column already exists).
-    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS name  TEXT`);
-    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS email TEXT`);
+    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS name         TEXT`);
+    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS email        TEXT`);
+    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS country_code TEXT`);
+    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS city         TEXT`);
     console.log("✓ generation_logs table");
 
     // ── indexes ───────────────────────────────────────────────────────────────

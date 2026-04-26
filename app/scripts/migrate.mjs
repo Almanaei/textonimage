@@ -72,8 +72,10 @@ async function migrate() {
         created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
     `);
-    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS name  TEXT`);
-    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS email TEXT`);
+    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS name         TEXT`);
+    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS email        TEXT`);
+    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS country_code TEXT`);
+    await client.query(`ALTER TABLE generation_logs ADD COLUMN IF NOT EXISTS city         TEXT`);
     console.log("✓ generation_logs table");
 
     await client.query(`CREATE INDEX IF NOT EXISTS idx_events_session_id        ON events (session_id)`);

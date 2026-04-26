@@ -36,7 +36,19 @@ export interface AdminGenerationRow {
   errorType: string | null;
   name: string | null;
   email: string | null;
+  countryCode: string | null;
+  city: string | null;
   createdAt: string;
+}
+
+export interface AdminLocationRow {
+  countryCode: string;
+  submissions: number;
+}
+
+export interface AdminLocationSummary {
+  generatedAt: string;
+  topCountries: AdminLocationRow[];
 }
 
 export interface AdminGenerationPage {

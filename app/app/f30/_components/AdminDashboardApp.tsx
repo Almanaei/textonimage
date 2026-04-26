@@ -6,15 +6,18 @@ import {
   AdminApiError,
   exportAdminReport,
   fetchAdminGenerations,
+  fetchAdminLocations,
   fetchAdminOverview,
   fetchAdminReport,
   fetchAdminSessions,
   fetchAdminUsers,
+  resetAdminData,
 } from "../_lib/api-client";
 import {
   AdminDateFilter,
   AdminExportFormat,
   AdminGenerationPage,
+  AdminLocationSummary,
   AdminOverview,
   AdminReportPayload,
   AdminReportType,
@@ -170,6 +173,10 @@ export default function AdminDashboardApp() {
   const [users, setUsers] = useState<AdminUsersSummary | null>(null);
   const [sessions, setSessions] = useState<AdminSessionsPage | null>(null);
   const [report, setReport] = useState<AdminReportPayload | null>(null);
+  const [locations, setLocations] = useState<AdminLocationSummary | null>(null);
+
+  const [isResetting, setIsResetting] = useState(false);
+  const [resetMessage, setResetMessage] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
@@ -188,6 +195,7 @@ export default function AdminDashboardApp() {
     setUsers(null);
     setSessions(null);
     setReport(null);
+    setLocations(null);
     setLastSyncedAt(null);
   }, []);
 
@@ -200,7 +208,7 @@ export default function AdminDashboardApp() {
       const errorType = nextQuery.generationErrorType.trim() || undefined;
 
       try {
-        const [overviewData, generationData, usersData, sessionsData, reportData] = await Promise.all([
+        const [overviewData, generationData, usersData, sessionsData, reportData, locationsData] = await Promise.all([
           fetchAdminOverview(nextQuery.filters),
           fetchAdminGenerations({
             ...nextQuery.filters,
@@ -224,6 +232,7 @@ export default function AdminDashboardApp() {
             sortBy: nextQuery.sessionsSortBy,
           }),
           fetchAdminReport(nextQuery.filters),
+          fetchAdminLocations(nextQuery.filters),
         ]);
 
         setOverview(overviewData);
@@ -231,6 +240,7 @@ export default function AdminDashboardApp() {
         setUsers(usersData);
         setSessions(sessionsData);
         setReport(reportData);
+        setLocations(locationsData);
         setLastSyncedAt(new Date().toISOString());
       } catch (error) {
         if (error instanceof AdminApiError && (error.status === 401 || error.status === 403)) {
@@ -335,6 +345,22 @@ export default function AdminDashboardApp() {
     }
   }
 
+  async function handleReset() {
+    if (!window.confirm("Are you sure you want to permanently delete ALL submission data? This cannot be undone.")) return;
+    setIsResetting(true);
+    setResetMessage("");
+    try {
+      const result = await resetAdminData();
+      setResetMessage(`✓ Reset complete — ${result.deletedSessions} sessions deleted.`);
+      clearDashboardData();
+      void loadDashboard(query);
+    } catch (error) {
+      setResetMessage(error instanceof Error ? error.message : "Reset failed.");
+    } finally {
+      setIsResetting(false);
+    }
+  }
+
   return (
     <div className="mx-auto w-full max-w-[1400px] px-4 py-6 md:px-8 md:py-10">
       <header className="rounded-3xl border border-white/10 bg-black/30 px-5 py-6 shadow-[0_15px_45px_-25px_rgba(0,0,0,0.85)] backdrop-blur md:px-8">
@@ -357,6 +383,14 @@ export default function AdminDashboardApp() {
             </button>
             <button
               type="button"
+              onClick={() => void handleReset()}
+              disabled={isResetting}
+              className="h-12 min-w-28 rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isResetting ? "Resetting..." : "Reset Data"}
+            </button>
+            <button
+              type="button"
               onClick={() => void logout()}
               className="h-12 min-w-28 rounded-2xl border border-white/20 bg-white/5 px-4 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
             >
@@ -373,6 +407,12 @@ export default function AdminDashboardApp() {
           </span>
         </div>
       </header>
+
+      {resetMessage ? (
+        <section className={`mt-4 rounded-2xl border p-4 text-sm ${resetMessage.startsWith("✓") ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-200" : "border-rose-500/40 bg-rose-500/10 text-rose-200"}`}>
+          {resetMessage}
+        </section>
+      ) : null}
 
       <section className="mt-6 rounded-3xl border border-white/10 bg-black/35 p-5 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.9)] backdrop-blur md:p-6">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -506,6 +546,7 @@ export default function AdminDashboardApp() {
                 <th className="px-3 py-3 font-medium">Created At</th>
                 <th className="px-3 py-3 font-medium">Name</th>
                 <th className="px-3 py-3 font-medium">Email</th>
+                <th className="px-3 py-3 font-medium">Location</th>
                 <th className="px-3 py-3 font-medium">Session</th>
                 <th className="px-3 py-3 font-medium">Status</th>
                 <th className="px-3 py-3 font-medium">Duration</th>
@@ -515,7 +556,7 @@ export default function AdminDashboardApp() {
             <tbody>
               {generationRows.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-3 py-8 text-center text-slate-400">
+                  <td colSpan={8} className="px-3 py-8 text-center text-slate-400">
                     {isLoading ? "Loading data…" : "No generation records for the selected filters."}
                   </td>
                 </tr>
@@ -525,6 +566,14 @@ export default function AdminDashboardApp() {
                     <td className="px-3 py-3">{formatDate(row.createdAt)}</td>
                     <td className="px-3 py-3 font-medium" dir="rtl">{row.name ?? <span className="text-slate-500">—</span>}</td>
                     <td className="px-3 py-3 text-slate-300">{row.email ?? <span className="text-slate-500">—</span>}</td>
+                    <td className="px-3 py-3 text-slate-300 whitespace-nowrap">
+                      {row.countryCode ? (
+                        <span className="inline-flex items-center gap-1">
+                          <span className="font-mono text-xs border border-white/15 rounded px-1.5 py-0.5 bg-white/5">{row.countryCode}</span>
+                          {row.city ? <span className="text-xs">{row.city}</span> : null}
+                        </span>
+                      ) : <span className="text-slate-500">—</span>}
+                    </td>
                     <td className="px-3 py-3 font-mono text-xs text-slate-300">{row.sessionId.slice(0, 8)}...</td>
                     <td className="px-3 py-3">
                       <span
@@ -724,7 +773,7 @@ export default function AdminDashboardApp() {
 
           {exportMessage ? <p className="mt-3 text-sm text-slate-200">{exportMessage}</p> : null}
 
-          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="rounded-2xl border border-white/10 bg-slate-900/50 p-4">
               <h3 className="text-sm font-semibold text-slate-100">Top Error Types</h3>
               <ul className="mt-3 space-y-2 text-sm text-slate-300">
@@ -750,6 +799,23 @@ export default function AdminDashboardApp() {
                     <li key={item.date} className="flex justify-between gap-3">
                       <span>{formatDateOnly(item.date)}</span>
                       <span>{formatNumber(item.sessions)}</span>
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-slate-900/50 p-4">
+              <h3 className="text-sm font-semibold text-slate-100">🌍 Top Countries</h3>
+              <ul className="mt-3 space-y-2 text-sm text-slate-300">
+                {(locations?.topCountries ?? []).length === 0 ? (
+                  <li>No location data yet.</li>
+                ) : (
+                  (locations?.topCountries ?? []).slice(0, 8).map((item) => (
+                    <li key={item.countryCode} className="flex items-center justify-between gap-3">
+                      <span className="flex items-center gap-2">
+                        <span className="font-mono text-xs border border-white/15 rounded px-1.5 py-0.5 bg-white/5">{item.countryCode}</span>
+                      </span>
+                      <span className="font-medium text-slate-100">{formatNumber(item.submissions)}</span>
                     </li>
                   ))
                 )}

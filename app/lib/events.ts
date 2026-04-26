@@ -58,6 +58,7 @@ export async function recordEvent(
 /**
  * Records a generation attempt outcome. Fire-and-forget.
  * name and email are stored so admins can review and export submissions.
+ * countryCode and city come from Cloudflare headers (cf-ipcountry / cf-ipcity).
  */
 export async function recordGenerationLog(
   sessionId: string | null,
@@ -66,15 +67,26 @@ export async function recordGenerationLog(
   errorType?: ErrorType,
   name?: string,
   email?: string,
+  countryCode?: string | null,
+  city?: string | null,
 ): Promise<void> {
   if (!sessionId) return;
   const pool = getPool();
   if (!pool) return;
   try {
     await pool.query(
-      `INSERT INTO generation_logs (session_id, success, duration_ms, error_type, name, email)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [sessionId, success, durationMs, errorType ?? null, name ?? null, email ?? null],
+      `INSERT INTO generation_logs (session_id, success, duration_ms, error_type, name, email, country_code, city)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [
+        sessionId,
+        success,
+        durationMs,
+        errorType ?? null,
+        name ?? null,
+        email ?? null,
+        countryCode ?? null,
+        city ?? null,
+      ],
     );
   } catch (err) {
     const msg = err instanceof Error

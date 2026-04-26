@@ -166,7 +166,19 @@ export interface AdminGenerationRow {
   errorType: string | null;
   name: string | null;
   email: string | null;
+  countryCode: string | null;
+  city: string | null;
   createdAt: string;
+}
+
+export interface AdminLocationRow {
+  countryCode: string;
+  submissions: number;
+}
+
+export interface AdminLocationSummary {
+  generatedAt: string;
+  topCountries: AdminLocationRow[];
 }
 
 export interface AdminGenerationPage {
@@ -230,9 +242,11 @@ export async function buildAdminGenerations(filters: GenerationFilters): Promise
       error_type: string | null;
       name: string | null;
       email: string | null;
+      country_code: string | null;
+      city: string | null;
       created_at: string;
     }>(
-      `SELECT id, session_id, success, duration_ms, error_type, name, email, created_at
+      `SELECT id, session_id, success, duration_ms, error_type, name, email, country_code, city, created_at
        FROM generation_logs
        ${where.where}
        ORDER BY created_at ${order}
@@ -255,6 +269,8 @@ export async function buildAdminGenerations(filters: GenerationFilters): Promise
       errorType: row.error_type,
       name: row.name,
       email: row.email,
+      countryCode: row.country_code,
+      city: row.city,
       createdAt: new Date(row.created_at).toISOString(),
     })),
   };
@@ -582,5 +598,31 @@ export async function buildAdminReport(
         sessions: toCount(row.sessions),
       })),
     },
+  };
+}
+
+export async function buildAdminLocations(range: AdminDateRange): Promise<AdminLocationSummary> {
+  const pool = assertPool();
+  const filter = buildDateRangeWhere(range, "created_at");
+  const cond = filter.where
+    ? `${filter.where} AND country_code IS NOT NULL`
+    : "WHERE country_code IS NOT NULL";
+
+  const res = await pool.query<{ country_code: string; total: string }>(
+    `SELECT country_code, COUNT(*)::bigint AS total
+     FROM generation_logs
+     ${cond} AND success = true
+     GROUP BY country_code
+     ORDER BY total DESC
+     LIMIT 30`,
+    filter.params,
+  );
+
+  return {
+    generatedAt: new Date().toISOString(),
+    topCountries: res.rows.map((row) => ({
+      countryCode: row.country_code,
+      submissions: toCount(row.total),
+    })),
   };
 }
