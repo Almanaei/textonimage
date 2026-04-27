@@ -107,7 +107,7 @@ export default function CertificateShell() {
     if (navigator.share) {
       const shareData: ShareData = {
         title: "شهادة شكر وتقدير",
-        text: "أنشئ شهادتك الخاصة لرجال الدفاع المدني البحريني",
+        text: "إنشأ بطاقتك لشكر رجال الدفاع المدني البحريني",
         url: APP_URL,
       };
       // Attach the image file when the browser supports file-in-share
