@@ -15,6 +15,28 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "شكر الدفاع المدني",
   description: "أنشئ شهادة شكرك لرجال الدفاع المدني البحريني",
+  openGraph: {
+    title: "شكر الدفاع المدني",
+    description: "أنشئ شهادة شكرك لرجال الدفاع المدني البحريني",
+    url: "https://thanksbahraincd.com",
+    siteName: "شكر الدفاع المدني",
+    images: [
+      {
+        url: "https://thanksbahraincd.com/assets/welcome_screen.png",
+        width: 1015,
+        height: 1801,
+        alt: "شكر الدفاع المدني",
+      },
+    ],
+    locale: "ar_BH",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "شكر الدفاع المدني",
+    description: "أنشئ شهادة شكرك لرجال الدفاع المدني البحريني",
+    images: ["https://thanksbahraincd.com/assets/welcome_screen.png"],
+  },
 };
 
 export const viewport: Viewport = {
