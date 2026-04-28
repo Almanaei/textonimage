@@ -161,23 +161,24 @@ export default function CertificateShell() {
 
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     const isAndroid = /Android/i.test(navigator.userAgent);
-    const isMobile = isIOS || isAndroid;
 
-    if (isIOS && typeof navigator.share === "function" && typeof navigator.canShare === "function") {
-      // iOS: use the native share sheet so the user can "Save to Photos" →
-      // the image lands in Camera Roll and Instagram Stories gallery will see it.
+    if (isIOS) {
+      // iOS: share the file via the native share sheet.
+      // The user taps "Instagram" in the sheet → Instagram opens with the image
+      // already loaded in its sharing interface → they select "Story" and post.
+      // This is the only reliable way to pre-load an image into Instagram from web on iOS —
+      // opening instagram://story-camera does NOT accept an image parameter.
       const file = new File([imageBlob], "shahadah.jpg", { type: "image/jpeg" });
-      if (navigator.canShare({ files: [file] })) {
+      if (typeof navigator.share === "function" && navigator.canShare?.({ files: [file] })) {
         try {
           await navigator.share({ files: [file], title: "شهادة شكر وتقدير" });
         } catch {
-          // User dismissed — still try to open Instagram
+          // User dismissed the share sheet — no action needed
         }
       }
-      // Open Stories camera after the share sheet closes (image should now be in Camera Roll).
-      window.location.href = "instagram://story-camera";
+      setIgStep("idle");
     } else if (isAndroid) {
-      // Android: <a download> saves straight to the gallery.
+      // Android: download to gallery then open Instagram Stories via intent.
       const a = document.createElement("a");
       a.href = imageUrl;
       a.download = "shahadah.jpg";
@@ -188,15 +189,7 @@ export default function CertificateShell() {
         window.location.href =
           "intent://story-camera#Intent;package=com.instagram.android;scheme=instagram;end";
       }, 900);
-    } else if (isMobile) {
-      // Other mobile — generic download + story-camera deep link.
-      const a = document.createElement("a");
-      a.href = imageUrl;
-      a.download = "shahadah.jpg";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => { window.location.href = "instagram://story-camera"; }, 900);
+      setTimeout(() => setIgStep("idle"), 3500);
     } else {
       // Desktop: download and show hint.
       const a = document.createElement("a");
@@ -207,10 +200,7 @@ export default function CertificateShell() {
       document.body.removeChild(a);
       setIgStep("saved");
       setTimeout(() => setIgStep("idle"), 4000);
-      return;
     }
-
-    setTimeout(() => setIgStep("idle"), 3000);
   }
 
   // ── Screen 1: Welcome ───────────────────────────────────────────────────────
@@ -494,13 +484,17 @@ export default function CertificateShell() {
       {igStep === "confirm" && (
         <div className="flex flex-col gap-2 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-3" dir="rtl">
           <p className="text-xs text-white/80 font-arabic leading-relaxed">
-            سيُحفظ الصورة في الجهاز ثم يُفتح إنستقرام تلقائياً — اختر الصورة من المعرض لنشرها في قصتك.
+            ستظهر قائمة المشاركة — اضغط على{" "}
+            <span className="font-bold text-white">إنستقرام</span>{" "}
+            ثم اختر{" "}
+            <span className="font-bold text-white">قصة</span>{" "}
+            لنشر الصورة مباشرةً.
           </p>
           <button
             onClick={handleIGDownloadAndOpen}
             className="w-full rounded-lg bg-gradient-to-l from-[#f09433] via-[#e6683c] to-[#dc2743] py-2.5 text-sm font-bold text-white shadow transition active:scale-95 hover:opacity-90 font-arabic"
           >
-            تحميل وفتح القصة
+            مشاركة في القصة
           </button>
         </div>
       )}
