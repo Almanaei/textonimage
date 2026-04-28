@@ -141,15 +141,33 @@ export default function CertificateShell() {
     }
   }
 
-  function handleWhatsApp() {
+  async function handleWhatsApp() {
     track("whatsapp_share_clicked");
-    // On mobile, the whatsapp:// URI scheme opens the app directly and shows
-    // the contact picker immediately — no intermediate browser redirect page.
-    // On desktop we fall back to wa.me which opens Web WhatsApp.
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
+
+    // On mobile: try to share the certificate image + text via the native share
+    // sheet. When the user picks WhatsApp the image and message arrive together
+    // in the chat. Falls back to the text-only URL scheme if files aren't supported.
+    if (isMobile && imageBlob) {
+      const file = new File([imageBlob], "shahadah.jpg", { type: "image/jpeg" });
+      if (
+        typeof navigator.share === "function" &&
+        navigator.canShare?.({ files: [file] })
+      ) {
+        try {
+          await navigator.share({
+            files: [file],
+            text: `انشأ بطاقة شكر خاصة لرجال الدفاع المدني البحريني من هنا: ${APP_URL}`,
+          });
+          return;
+        } catch {
+          // User dismissed — fall through to URL scheme
+        }
+      }
+      // Fallback: text-only direct WhatsApp deep link
       window.location.href = `whatsapp://send?text=${WHATSAPP_TEXT}`;
     } else {
+      // Desktop: open Web WhatsApp with the text
       window.open(`https://wa.me/?text=${WHATSAPP_TEXT}`, "_blank", "noopener,noreferrer");
     }
   }
