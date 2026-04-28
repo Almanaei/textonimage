@@ -20,7 +20,7 @@ function BahrainEmblem({ className }: { className?: string }) {
 
 type Screen = "welcome" | "form" | "result";
 type ShareStatus = "idle" | "copied";
-type IGStatus = "idle" | "saved";
+type IGStep = "idle" | "confirm" | "opening" | "saved";
 
 const APP_URL = typeof window !== "undefined" ? window.location.origin : "https://thanksbahraincd.com";
 const WHATSAPP_TEXT = encodeURIComponent(
@@ -41,7 +41,7 @@ export default function CertificateShell() {
   const [imageUrl, setImageUrl] = useState<string>("");
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [shareStatus, setShareStatus] = useState<ShareStatus>("idle");
-  const [igStatus, setIgStatus] = useState<IGStatus>("idle");
+  const [igStep, setIgStep] = useState<IGStep>("idle");
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [serverError, setServerError] = useState("");
@@ -154,33 +154,63 @@ export default function CertificateShell() {
     }
   }
 
-  function handleInstagramStory() {
+  async function handleIGDownloadAndOpen() {
     if (!imageBlob || !imageUrl) return;
     track("instagram_story_clicked");
+    setIgStep("opening");
 
-    // Always download the image first so it lands in the device gallery / Downloads.
-    const a = document.createElement("a");
-    a.href = imageUrl;
-    a.download = "shahadah.jpg";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isMobile = isIOS || isAndroid;
 
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      // Open Instagram Stories camera via deep link after a short delay to let
-      // the download register in the gallery.
+    if (isIOS && typeof navigator.share === "function" && typeof navigator.canShare === "function") {
+      // iOS: use the native share sheet so the user can "Save to Photos" →
+      // the image lands in Camera Roll and Instagram Stories gallery will see it.
+      const file = new File([imageBlob], "shahadah.jpg", { type: "image/jpeg" });
+      if (navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: "شهادة شكر وتقدير" });
+        } catch {
+          // User dismissed — still try to open Instagram
+        }
+      }
+      // Open Stories camera after the share sheet closes (image should now be in Camera Roll).
+      window.location.href = "instagram://story-camera";
+    } else if (isAndroid) {
+      // Android: <a download> saves straight to the gallery.
+      const a = document.createElement("a");
+      a.href = imageUrl;
+      a.download = "shahadah.jpg";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
       setTimeout(() => {
-        const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-        window.location.href = isIOS
-          ? "instagram://story-camera"
-          : "intent://story-camera#Intent;package=com.instagram.android;scheme=instagram;end";
-      }, 600);
+        window.location.href =
+          "intent://story-camera#Intent;package=com.instagram.android;scheme=instagram;end";
+      }, 900);
+    } else if (isMobile) {
+      // Other mobile — generic download + story-camera deep link.
+      const a = document.createElement("a");
+      a.href = imageUrl;
+      a.download = "shahadah.jpg";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => { window.location.href = "instagram://story-camera"; }, 900);
     } else {
-      // Desktop: image is downloaded — show a brief hint then reset.
-      setIgStatus("saved");
-      setTimeout(() => setIgStatus("idle"), 3500);
+      // Desktop: download and show hint.
+      const a = document.createElement("a");
+      a.href = imageUrl;
+      a.download = "shahadah.jpg";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setIgStep("saved");
+      setTimeout(() => setIgStep("idle"), 4000);
+      return;
     }
+
+    setTimeout(() => setIgStep("idle"), 3000);
   }
 
   // ── Screen 1: Welcome ───────────────────────────────────────────────────────
@@ -445,22 +475,54 @@ export default function CertificateShell() {
         {/* Instagram Stories */}
         <button
           aria-label="شارك في قصة إنستقرام"
-          onClick={handleInstagramStory}
-          className="relative flex flex-1 items-center justify-center rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 py-4 text-white shadow-lg transition active:scale-95 hover:bg-white/20"
+          onClick={() => setIgStep(igStep === "confirm" ? "idle" : "confirm")}
+          className={`relative flex flex-1 items-center justify-center rounded-xl backdrop-blur-xl border py-4 text-white shadow-lg transition active:scale-95 ${
+            igStep === "confirm"
+              ? "bg-white/25 border-white/50"
+              : "bg-white/10 border-white/20 hover:bg-white/20"
+          }`}
         >
-          {igStatus === "saved" ? (
-            <span className="text-[10px] font-bold text-green-400 text-center leading-tight font-arabic px-1">
-              حُفظت!<br/>افتح إنستقرام
-            </span>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <circle cx="12" cy="12" r="4"/>
-              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
-            </svg>
-          )}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
         </button>
       </div>
+
+      {/* Instagram Stories confirmation panel */}
+      {igStep === "confirm" && (
+        <div className="flex flex-col gap-2 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-3" dir="rtl">
+          <p className="text-xs text-white/80 font-arabic leading-relaxed">
+            سيُحفظ الصورة في الجهاز ثم يُفتح إنستقرام تلقائياً — اختر الصورة من المعرض لنشرها في قصتك.
+          </p>
+          <button
+            onClick={handleIGDownloadAndOpen}
+            className="w-full rounded-lg bg-gradient-to-l from-[#f09433] via-[#e6683c] to-[#dc2743] py-2.5 text-sm font-bold text-white shadow transition active:scale-95 hover:opacity-90 font-arabic"
+          >
+            تحميل وفتح القصة
+          </button>
+        </div>
+      )}
+
+      {igStep === "opening" && (
+        <div className="flex items-center justify-center gap-2 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-3" dir="rtl">
+          <svg className="h-4 w-4 animate-spin text-white/70 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+          </svg>
+          <span className="text-xs text-white/80 font-arabic">جاري الفتح…</span>
+        </div>
+      )}
+
+      {igStep === "saved" && (
+        <div className="flex items-center justify-center gap-2 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-3" dir="rtl">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-400 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+          </svg>
+          <span className="text-xs text-white/80 font-arabic">حُفظت الصورة — افتح إنستقرام وشاركها في قصتك</span>
+        </div>
+      )}
 
     </div>
   );
