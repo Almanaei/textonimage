@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "شكر الدفاع المدني",
     images: [
       {
-        url: "https://thanksbahraincd.com/assets/welcome_screen.png",
+        url: "https://thanksbahraincd.com/assets/welcome_screen.png?v=2",
         width: 1015,
         height: 1801,
         alt: "شكر الدفاع المدني",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "شكر الدفاع المدني",
     description: "أنشئ شهادة شكرك لرجال الدفاع المدني البحريني",
-    images: ["https://thanksbahraincd.com/assets/welcome_screen.png"],
+    images: ["https://thanksbahraincd.com/assets/welcome_screen.png?v=2"],
   },
 };
 

@@ -24,7 +24,7 @@ type IGStep = "idle" | "opening" | "saved";
 
 const APP_URL = typeof window !== "undefined" ? window.location.origin : "https://thanksbahraincd.com";
 const WHATSAPP_TEXT = encodeURIComponent(
-  `أنشئ شهادة شكرك لرجال الدفاع المدني البحريني من هنا: ${APP_URL}`,
+  `إنشأ بطاقتك لشكر رجال الدفاع المدني البحريني من هنا: ${APP_URL}`,
 );
 
 function track(eventType: string) {
