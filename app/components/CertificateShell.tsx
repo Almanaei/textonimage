@@ -24,7 +24,7 @@ type IGStep = "idle" | "opening" | "saved";
 
 const APP_URL = typeof window !== "undefined" ? window.location.origin : "https://thanksbahraincd.com";
 const WHATSAPP_TEXT = encodeURIComponent(
-  `إنشأ بطاقتك لشكر رجال الدفاع المدني البحريني من هنا: ${APP_URL}`,
+  `انشأ بطاقة شكر خاصة لرجال الدفاع المدني البحريني من هنا: ${APP_URL}`,
 );
 
 function track(eventType: string) {
@@ -109,7 +109,7 @@ export default function CertificateShell() {
     if (navigator.share) {
       const shareData: ShareData = {
         title: "شهادة شكر وتقدير",
-        text: "إنشأ بطاقتك لشكر رجال الدفاع المدني البحريني",
+        text: "انشأ بطاقة شكر خاصة لرجال الدفاع المدني البحريني",
         url: APP_URL,
       };
       // Attach the image file when the browser supports file-in-share
