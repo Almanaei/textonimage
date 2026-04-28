@@ -20,7 +20,7 @@ function BahrainEmblem({ className }: { className?: string }) {
 
 type Screen = "welcome" | "form" | "result";
 type ShareStatus = "idle" | "copied";
-type IGStep = "idle" | "confirm" | "opening" | "saved";
+type IGStep = "idle" | "confirm" | "saving" | "open_ig" | "opening" | "saved";
 
 const APP_URL = typeof window !== "undefined" ? window.location.origin : "https://thanksbahraincd.com";
 const WHATSAPP_TEXT = encodeURIComponent(
@@ -154,31 +154,36 @@ export default function CertificateShell() {
     }
   }
 
+  async function handleIGSaveToPhotos() {
+    if (!imageBlob) return;
+    setIgStep("saving");
+    const file = new File([imageBlob], "shahadah.jpg", { type: "image/jpeg" });
+    if (typeof navigator.share === "function" && navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: "شهادة شكر وتقدير" });
+      } catch {
+        // User dismissed — stay on open_ig step so they can still proceed
+      }
+    }
+    // Whether they saved or dismissed, show the "Open Instagram" button next
+    setIgStep("open_ig");
+  }
+
+  function handleIGOpenStories() {
+    track("instagram_story_clicked");
+    setIgStep("opening");
+    window.location.href = "instagram://story-camera";
+    setTimeout(() => setIgStep("idle"), 3000);
+  }
+
   async function handleIGDownloadAndOpen() {
     if (!imageBlob || !imageUrl) return;
     track("instagram_story_clicked");
     setIgStep("opening");
 
-    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     const isAndroid = /Android/i.test(navigator.userAgent);
 
-    if (isIOS) {
-      // iOS: share the file via the native share sheet.
-      // The user taps "Instagram" in the sheet → Instagram opens with the image
-      // already loaded in its sharing interface → they select "Story" and post.
-      // This is the only reliable way to pre-load an image into Instagram from web on iOS —
-      // opening instagram://story-camera does NOT accept an image parameter.
-      const file = new File([imageBlob], "shahadah.jpg", { type: "image/jpeg" });
-      if (typeof navigator.share === "function" && navigator.canShare?.({ files: [file] })) {
-        try {
-          await navigator.share({ files: [file], title: "شهادة شكر وتقدير" });
-        } catch {
-          // User dismissed the share sheet — no action needed
-        }
-      }
-      setIgStep("idle");
-    } else if (isAndroid) {
-      // Android: download to gallery then open Instagram Stories via intent.
+    if (isAndroid) {
       const a = document.createElement("a");
       a.href = imageUrl;
       a.download = "shahadah.jpg";
@@ -465,9 +470,20 @@ export default function CertificateShell() {
         {/* Instagram Stories */}
         <button
           aria-label="شارك في قصة إنستقرام"
-          onClick={() => setIgStep(igStep === "confirm" ? "idle" : "confirm")}
+          onClick={() => {
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            if (igStep !== "idle") { setIgStep("idle"); return; }
+            if (isIOS) {
+              setIgStep("confirm");
+            } else if (isAndroid) {
+              void handleIGDownloadAndOpen();
+            } else {
+              void handleIGDownloadAndOpen();
+            }
+          }}
           className={`relative flex flex-1 items-center justify-center rounded-xl backdrop-blur-xl border py-4 text-white shadow-lg transition active:scale-95 ${
-            igStep === "confirm"
+            igStep !== "idle"
               ? "bg-white/25 border-white/50"
               : "bg-white/10 border-white/20 hover:bg-white/20"
           }`}
@@ -480,21 +496,40 @@ export default function CertificateShell() {
         </button>
       </div>
 
-      {/* Instagram Stories confirmation panel */}
+      {/* ── iOS: Step 1 — save to Photos ── */}
       {igStep === "confirm" && (
         <div className="flex flex-col gap-2 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-3" dir="rtl">
-          <p className="text-xs text-white/80 font-arabic leading-relaxed">
-            ستظهر قائمة المشاركة — اضغط على{" "}
-            <span className="font-bold text-white">إنستقرام</span>{" "}
-            ثم اختر{" "}
-            <span className="font-bold text-white">قصة</span>{" "}
-            لنشر الصورة مباشرةً.
-          </p>
+          <div className="flex items-center gap-2">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/20 text-[10px] font-bold text-white">١</span>
+            <p className="text-xs text-white/80 font-arabic leading-relaxed">
+              ستظهر قائمة — اضغط على <span className="font-bold text-white">احفظ الصورة</span>
+            </p>
+          </div>
           <button
-            onClick={handleIGDownloadAndOpen}
+            onClick={() => void handleIGSaveToPhotos()}
             className="w-full rounded-lg bg-gradient-to-l from-[#f09433] via-[#e6683c] to-[#dc2743] py-2.5 text-sm font-bold text-white shadow transition active:scale-95 hover:opacity-90 font-arabic"
           >
-            مشاركة في القصة
+            حفظ الصورة
+          </button>
+        </div>
+      )}
+
+      {/* ── iOS: Step 2 — open Instagram Stories ── */}
+      {igStep === "open_ig" && (
+        <div className="flex flex-col gap-2 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-3" dir="rtl">
+          <div className="flex items-center gap-2">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/20 text-[10px] font-bold text-white">٢</span>
+            <p className="text-xs text-white/80 font-arabic leading-relaxed">
+              الصورة جاهزة — افتح إنستقرام ثم اضغط على{" "}
+              <span className="font-bold text-white">الصورة الصغيرة</span>{" "}
+              في أسفل يسار شاشة القصص
+            </p>
+          </div>
+          <button
+            onClick={handleIGOpenStories}
+            className="w-full rounded-lg bg-gradient-to-l from-[#833ab4] via-[#fd1d1d] to-[#fcb045] py-2.5 text-sm font-bold text-white shadow transition active:scale-95 hover:opacity-90 font-arabic"
+          >
+            افتح إنستقرام
           </button>
         </div>
       )}
@@ -506,6 +541,16 @@ export default function CertificateShell() {
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
           </svg>
           <span className="text-xs text-white/80 font-arabic">جاري الفتح…</span>
+        </div>
+      )}
+
+      {igStep === "saving" && (
+        <div className="flex items-center justify-center gap-2 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-3" dir="rtl">
+          <svg className="h-4 w-4 animate-spin text-white/70 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+          </svg>
+          <span className="text-xs text-white/80 font-arabic">جارٍ الحفظ…</span>
         </div>
       )}
 
