@@ -324,8 +324,8 @@ export default function AdminDashboardApp() {
           success: query.generationSuccess === "all" ? undefined : query.generationSuccess,
           errorType: query.generationErrorType || undefined,
         },
-        page: query.generationPage,
-        pageSize: query.generationPageSize,
+        page: 1,
+        pageSize: 500,
       });
 
       const url = URL.createObjectURL(artifact.blob);

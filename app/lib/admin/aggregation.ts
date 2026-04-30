@@ -443,7 +443,12 @@ interface SessionsFilters {
   sortOrder: "asc" | "desc";
 }
 
+const ALLOWED_SESSION_SORT_COLUMNS = new Set<string>(["created_at", "last_seen_at"]);
+
 export async function buildAdminSessions(filters: SessionsFilters): Promise<AdminSessionsPage> {
+  if (!ALLOWED_SESSION_SORT_COLUMNS.has(filters.sortBy)) {
+    throw new Error(`Invalid sortBy column: "${filters.sortBy}"`);
+  }
   const pool = assertPool();
   const where = buildDateRangeWhere(filters.range, "created_at");
   const order = filters.sortOrder === "asc" ? "ASC" : "DESC";

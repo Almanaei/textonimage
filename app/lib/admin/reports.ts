@@ -132,9 +132,23 @@ function normalizeForCsv(payload: unknown): Record<string, unknown>[] {
   }
 
   const data = payload as Record<string, unknown>;
+
+  // Paginated list responses (generations, sessions)
   if (Array.isArray(data.rows)) {
     return data.rows as Record<string, unknown>[];
   }
+
+  // Users summary: prepend one aggregate-totals row, then daily trend rows.
+  // Without this, normalizeForCsv would silently discard data.summary.
+  if (
+    data.summary &&
+    typeof data.summary === "object" &&
+    Array.isArray(data.trend)
+  ) {
+    const summaryRow = { date: "TOTALS", ...(data.summary as Record<string, unknown>) };
+    return [summaryRow, ...(data.trend as Record<string, unknown>[])];
+  }
+
   if (Array.isArray(data.trend)) {
     return data.trend as Record<string, unknown>[];
   }
